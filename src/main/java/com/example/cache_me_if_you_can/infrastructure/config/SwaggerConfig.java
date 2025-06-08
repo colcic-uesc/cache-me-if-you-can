@@ -1,4 +1,4 @@
-package com.example.cache_me_if_you_can.config;
+package com.example.cache_me_if_you_can.infrastructure.config;
 
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.OpenAPI;
