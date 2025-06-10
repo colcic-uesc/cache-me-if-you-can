@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-EconometroApplication<econometro>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.cachemeifyoucan.econometro.EconometroApplication",
+            "projectName": "econometro",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
