@@ -8,10 +8,10 @@
 		<version>3.5.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>cache-me-if-you-can</artifactId>
+	<groupId>com.cachemeifyoucan</groupId>
+	<artifactId>econometro</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Cache me if you can</name>
+	<name>Econômetro</name>
 	<description>A price comparison tool.</description>
 	<url/>
 	<licenses>
