@@ -3,6 +3,8 @@ package com.cachemeifyoucan.econometro.domain.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -64,6 +66,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     @NotNull(message = "Category is required")
+    @JsonIgnoreProperties("parent")
     private Category category;
 
     public Product(String title, String description, BigDecimal price, int stockQuantity, Brand brand, Category category) {
