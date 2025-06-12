@@ -7,5 +7,7 @@ import com.cachemeifyoucan.econometro.domain.model.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    boolean existsByTitle(String title);
     
 }
