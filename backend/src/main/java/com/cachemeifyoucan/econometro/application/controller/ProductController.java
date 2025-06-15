@@ -16,6 +16,7 @@ import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.service.ProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class ProductController {
 
     @PostMapping
     @Operation(summary = "Create Product", description = " Creates a product with the provided information")
-    public ResponseEntity<?> create(@RequestBody CreateProductRequest request) {
+    public ResponseEntity<?> create(@Valid @RequestBody CreateProductRequest request) {
         Product product = productService.createProduct(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -49,7 +50,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update Product", description = "Updates a product with the provided information")
-    public ResponseEntity<?> update(long id, @RequestBody UpdateProductRequest request) {
+    public ResponseEntity<?> update(long id, @Valid @RequestBody UpdateProductRequest request) {
         return ResponseEntity.ok(productService.updateProduct(id, request));
     }
 

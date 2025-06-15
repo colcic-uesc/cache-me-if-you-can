@@ -15,6 +15,7 @@ import com.cachemeifyoucan.econometro.domain.model.Brand;
 import com.cachemeifyoucan.econometro.domain.service.BrandService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -26,7 +27,7 @@ public class BrandController {
 
     @PostMapping
     @Operation(summary = "Create Brand", description = " Creates a brand with the provided information")
-    public ResponseEntity<?> create(@RequestBody BrandRequest request) {
+    public ResponseEntity<?> create(@Valid @RequestBody BrandRequest request) {
         Brand brand = brandService.createBrand(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -48,7 +49,7 @@ public class BrandController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update Brand", description = "Updates a brand with the provided information")
-    public ResponseEntity<?> update(long id, @RequestBody BrandRequest request) {
+    public ResponseEntity<?> update(long id, @Valid @RequestBody BrandRequest request) {
         return ResponseEntity.ok(brandService.updateBrand(id, request));
     }
 
