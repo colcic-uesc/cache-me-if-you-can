@@ -15,6 +15,7 @@ import com.cachemeifyoucan.econometro.domain.model.Category;
 import com.cachemeifyoucan.econometro.domain.service.CategoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -25,7 +26,7 @@ public class CategoryController {
 
     @PostMapping
     @Operation(summary = "Create Category", description = " Creates a category with the provided information")
-    public ResponseEntity<?> create(@RequestBody CategoryRequest request) {
+    public ResponseEntity<?> create(@Valid @RequestBody CategoryRequest request) {
         Category categories = categoryService.createCategory(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -47,7 +48,7 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update Category", description = "Updates a category with the provided information")
-    public ResponseEntity<?> update(long id, @RequestBody CategoryRequest request) {
+    public ResponseEntity<?> update(long id, @Valid @RequestBody CategoryRequest request) {
         return ResponseEntity.ok(categoryService.updateCategory(id, request));
     }
 
