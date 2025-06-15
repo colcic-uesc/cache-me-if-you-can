@@ -8,4 +8,6 @@ import com.cachemeifyoucan.econometro.domain.model.Brand;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 
+    boolean existsByName(String name);
+
 }

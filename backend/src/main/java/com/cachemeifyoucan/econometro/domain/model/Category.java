@@ -1,5 +1,9 @@
 package com.cachemeifyoucan.econometro.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +22,8 @@ import lombok.Setter;
 @Entity
 public class Category {
 
+    public static final long DEFAULT_CATEGORY = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -28,7 +34,12 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Category parent;
+
+    @JsonIgnore
+    @Column(name = "system")
+    private boolean system;
 
     public Category(String name) {
         this.name = name;

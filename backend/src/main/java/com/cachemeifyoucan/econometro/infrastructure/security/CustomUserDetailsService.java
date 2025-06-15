@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.cachemeifyoucan.econometro.domain.repository.UserRepository;
+import com.cachemeifyoucan.econometro.domain.service.UserService;
 
 import lombok.AllArgsConstructor;
 
@@ -14,14 +14,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.cachemeifyoucan.econometro.domain.model.User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User %s doesn't exist.", email));
-        }
+        
+        com.cachemeifyoucan.econometro.domain.model.User user = userService.findByEmail(email);
 
         return User.withUsername(user.getEmail())
                 .password(user.getPassword())
