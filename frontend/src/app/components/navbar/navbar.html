@@ -1,1 +1,10 @@
 <p>Econômetro</p>
+<app-search-bar></app-search-bar>
+@if (user) {
+    {{user.name}}
+} @else {
+    <button (click)="showLogin = true">Entrar</button>
+}
+@if (showLogin) {
+<app-login (close)="showLogin = false"></app-login>
+}

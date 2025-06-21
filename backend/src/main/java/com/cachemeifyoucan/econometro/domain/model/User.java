@@ -1,6 +1,7 @@
 package com.cachemeifyoucan.econometro.domain.model;
 
 import com.cachemeifyoucan.econometro.domain.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Entity;
@@ -30,6 +31,7 @@ public class User {
     @NotBlank(message = "Email is required")
     @Nonnull
     private String email;
+    @JsonIgnore
     @NotBlank(message = "Password is required")
     @Nonnull
     private String password;

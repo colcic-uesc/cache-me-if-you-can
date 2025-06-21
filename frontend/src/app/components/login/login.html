@@ -1,0 +1,5 @@
+<div id="login-wrapper">
+    <input type="text" [(ngModel)]="email" />
+    <input type="password" [(ngModel)]="password" />
+    <button (click)="login()" [disabled]="loading">Entrar</button>
+</div>

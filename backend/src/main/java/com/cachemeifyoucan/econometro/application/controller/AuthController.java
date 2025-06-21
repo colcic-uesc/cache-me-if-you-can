@@ -2,10 +2,12 @@ package com.cachemeifyoucan.econometro.application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cachemeifyoucan.econometro.application.dto.CreateUserRequest;
 import com.cachemeifyoucan.econometro.application.dto.LoginRequest;
+import com.cachemeifyoucan.econometro.domain.model.User;
 import com.cachemeifyoucan.econometro.domain.service.UserService;
 import com.cachemeifyoucan.econometro.infrastructure.security.JWTUtil;
 
@@ -48,6 +51,12 @@ public class AuthController {
     public ResponseEntity<Void> create(@Valid @RequestBody CreateUserRequest user) {
         userService.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("isAuthenticated()")
+    public User getUser() {
+        return userService.getLoggedInUser();
     }
 
 }
