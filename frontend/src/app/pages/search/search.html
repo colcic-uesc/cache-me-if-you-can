@@ -1,0 +1,8 @@
+<h1>Você buscou {{query}}</h1>
+<ul>
+    @for (product of products; track product.id ) {
+    <li>
+        {{product.title}}
+    </li>
+    }
+</ul>
