@@ -20,17 +20,18 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final BrandService brandService;
     private final CategoryService categoryService;
-    
+
     public Product createProduct(CreateProductRequest dto) {
         if (productRepository.existsByTitle(dto.title())) {
             throw new IllegalArgumentException("Product with this title already exists");
         }
- 
-        Brand brand= brandService.getBrandById(dto.brandId());
+
+        Brand brand = brandService.getBrandById(dto.brandId());
         Category category = categoryService.getCategoryById(dto.categoryId());
 
-        Product product = new Product(dto.title(), dto.description(), dto.price(), dto.stockQuantity(), brand, category);
-       
+        Product product = new Product(dto.title(), dto.description(), dto.price(), dto.stockQuantity(), brand,
+                category);
+
         return productRepository.save(product);
     }
 
@@ -38,11 +39,15 @@ public class ProductService {
         return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
     }
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+
+    public List<Product> getAllProducts(String query) {
+        if (query == null || query.isEmpty()) {
+            return productRepository.findAll();
+        }
+        return productRepository.findByTextQuery(query);
     }
 
-    public Product updateProduct(long id, UpdateProductRequest dto){
+    public Product updateProduct(long id, UpdateProductRequest dto) {
         Product product = getProductById(id);
         product.setTitle(dto.title());
         product.setDescription(dto.description());

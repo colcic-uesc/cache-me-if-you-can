@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
@@ -44,8 +45,8 @@ public class ProductController {
 
     @GetMapping
     @Operation(summary = "Get All Products", description = "Retrieves all products")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<?> getAll(@RequestParam(required = false) String query) {
+        return ResponseEntity.ok(productService.getAllProducts(query));
     }
 
     @PutMapping("/{id}")
