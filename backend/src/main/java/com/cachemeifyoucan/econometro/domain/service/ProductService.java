@@ -9,6 +9,7 @@ import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
 import com.cachemeifyoucan.econometro.application.dto.UpdateProductRequest;
 import com.cachemeifyoucan.econometro.domain.model.Brand;
 import com.cachemeifyoucan.econometro.domain.model.Category;
+import com.cachemeifyoucan.econometro.domain.model.Image;
 import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.repository.ProductRepository;
 
@@ -28,9 +29,10 @@ public class ProductService {
 
         Brand brand = brandService.getBrandById(dto.brandId());
         Category category = categoryService.getCategoryById(dto.categoryId());
+        List<Image> images = dto.images().stream().map(content -> new Image(content)).toList();
 
         Product product = new Product(dto.title(), dto.description(), dto.price(), dto.stockQuantity(), brand,
-                category);
+                category, images);
 
         return productRepository.save(product);
     }

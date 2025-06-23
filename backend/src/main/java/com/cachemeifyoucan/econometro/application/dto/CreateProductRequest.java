@@ -1,6 +1,7 @@
 package com.cachemeifyoucan.econometro.application.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -30,8 +31,10 @@ public record CreateProductRequest(
     long brandId,
     
     @NotNull(message = "Category is required")
-    @JsonIgnoreProperties("parent")
-    long categoryId
+    long categoryId,
+
+
+    List<String> images
 ) {
 
 }

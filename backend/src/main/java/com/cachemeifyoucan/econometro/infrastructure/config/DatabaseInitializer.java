@@ -1,11 +1,18 @@
 package com.cachemeifyoucan.econometro.infrastructure.config;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.cachemeifyoucan.econometro.application.dto.BrandRequest;
@@ -21,12 +28,11 @@ import com.cachemeifyoucan.econometro.domain.service.CategoryService;
 import com.cachemeifyoucan.econometro.domain.service.ProductService;
 import com.cachemeifyoucan.econometro.domain.service.UserService;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 @Component
 @Profile("dev")
 public class DatabaseInitializer implements CommandLineRunner {
+
+    private String IMAGE_FOLDER = "images";
 
     private final UserRepository userRepository;
     private final UserService userService;
@@ -36,6 +42,19 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final CategoryService categoryService;
     private final ProductRepository productRepository;
     private final ProductService productService;
+
+    public DatabaseInitializer(UserRepository userRepository, UserService userService, BrandRepository brandRepository,
+            BrandService brandService, CategoryRepository categoryRepository, CategoryService categoryService,
+            ProductRepository productRepository, ProductService productService) {
+        this.userRepository = userRepository;
+        this.userService = userService;
+        this.brandRepository = brandRepository;
+        this.brandService = brandService;
+        this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
+        this.productRepository = productRepository;
+        this.productService = productService;
+    }
 
     @Override
     public void run(String... args) throws Exception {
@@ -70,7 +89,8 @@ public class DatabaseInitializer implements CommandLineRunner {
             return;
         }
         List<BrandRequest> brands = List
-                .of("Samsung", "Apple", "Google", "Motorola", "Xiaomi", "Shein", "Lacoste", "Genérico", "Brasterápica")
+                .of("Samsung", "Apple", "Google", "Motorola", "Xiaomi", "Shein", "Lacoste", "Genérico",
+                        "Brasterápica")
                 .stream()
                 .map(brand -> new BrandRequest(brand)).toList();
 
@@ -97,7 +117,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             categoryService.createCategory(category);
         }
 
-        categoryService.makeCategorySystem(1); 
+        categoryService.makeCategorySystem(1);
     }
 
     private void createProducts() {
@@ -106,44 +126,72 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
 
         List<CreateProductRequest> products = List.of(
-                new CreateProductRequest("Galaxy S24", "Smartphone Samsung Galaxy S24 com tela AMOLED e câmera tripla",
-                        BigDecimal.valueOf(10.99), 100, 1, 3),
-                new CreateProductRequest("iPhone 15", "Apple iPhone 15 com processador A17 Bionic e câmera avançada",
-                        BigDecimal.valueOf(20.99), 200, 2, 3),
-                new CreateProductRequest("Pixel 8", "Google Pixel 8 com Android puro e câmera de alta resolução",
-                        BigDecimal.valueOf(30.99), 300, 3, 3),
-                new CreateProductRequest("Moto G15", "Motorola Moto G15 com bateria de longa duração e tela grande",
-                        BigDecimal.valueOf(40.99), 400, 4, 3),
-                new CreateProductRequest("Redmi 13", "Xiaomi Redmi 13 com ótimo custo-benefício e desempenho eficiente",
-                        BigDecimal.valueOf(50.99), 500, 5, 3),
+                new CreateProductRequest("Galaxy S24",
+                        "Smartphone Samsung Galaxy S24 com tela AMOLED e câmera tripla",
+                        BigDecimal.valueOf(10.99), 100, 1, 3,
+                        findAndConvertImages(List.of("galaxyS24.png", "galaxyS24-2.jpg"))),
+                new CreateProductRequest("iPhone 15",
+                        "Apple iPhone 15 com processador A17 Bionic e câmera avançada",
+                        BigDecimal.valueOf(20.99), 200, 2, 3, findAndConvertImages(List.of())),
+                new CreateProductRequest("Pixel 8",
+                        "Google Pixel 8 com Android puro e câmera de alta resolução",
+                        BigDecimal.valueOf(30.99), 300, 3, 3, findAndConvertImages(List.of())),
+                new CreateProductRequest("Moto G15",
+                        "Motorola Moto G15 com bateria de longa duração e tela grande",
+                        BigDecimal.valueOf(40.99), 400, 4, 3, findAndConvertImages(List.of())),
+                new CreateProductRequest("Redmi 13",
+                        "Xiaomi Redmi 13 com ótimo custo-benefício e desempenho eficiente",
+                        BigDecimal.valueOf(50.99), 500, 5, 3, findAndConvertImages(List.of())),
 
-                new CreateProductRequest("iPad Pro", "Tablet avançado da Apple com tela Liquid Retina e chip M2",
-                        BigDecimal.valueOf(60.99), 150, 2, 4),
-                new CreateProductRequest("Galaxy Tab S9", "Tablet Samsung Galaxy Tab S9 com S Pen e tela AMOLED",
-                        BigDecimal.valueOf(55.99), 120, 1, 4),
-                new CreateProductRequest("Pixel Tablet", "Tablet Google Pixel com integração ao ecossistema Android",
-                        BigDecimal.valueOf(45.99), 80, 3, 4),
+                new CreateProductRequest("iPad Pro",
+                        "Tablet avançado da Apple com tela Liquid Retina e chip M2",
+                        BigDecimal.valueOf(60.99), 150, 2, 4, findAndConvertImages(List.of())),
+                new CreateProductRequest("Galaxy Tab S9",
+                        "Tablet Samsung Galaxy Tab S9 com S Pen e tela AMOLED",
+                        BigDecimal.valueOf(55.99), 120, 1, 4, findAndConvertImages(List.of())),
+                new CreateProductRequest("Pixel Tablet",
+                        "Tablet Google Pixel com integração ao ecossistema Android",
+                        BigDecimal.valueOf(45.99), 80, 3, 4, findAndConvertImages(List.of())),
 
                 new CreateProductRequest("Capa Protetora",
-                        "Capa protetora resistente para smartphones de diversas marcas", BigDecimal.valueOf(9.99), 300,
-                        1, 5),
+                        "Capa protetora resistente para smartphones de diversas marcas",
+                        BigDecimal.valueOf(9.99), 300,
+                        1, 5, findAndConvertImages(List.of())),
                 new CreateProductRequest("Fone de Ouvido Bluetooth",
                         "Fone de ouvido Bluetooth com cancelamento de ruído e bateria duradoura",
-                        BigDecimal.valueOf(19.99), 250, 4, 5),
+                        BigDecimal.valueOf(19.99), 250, 4, 5, findAndConvertImages(List.of())),
 
                 new CreateProductRequest("Camiseta Básica",
                         "Camiseta básica de algodão confortável e disponível em várias cores",
-                        BigDecimal.valueOf(29.99), 400, 7, 6),
-                new CreateProductRequest("Calça Jeans", "Calça jeans masculina de alta qualidade e modelagem moderna",
-                        BigDecimal.valueOf(59.99), 200, 6, 6),
+                        BigDecimal.valueOf(29.99), 400, 7, 6, findAndConvertImages(List.of())),
+                new CreateProductRequest("Calça Jeans",
+                        "Calça jeans masculina de alta qualidade e modelagem moderna",
+                        BigDecimal.valueOf(59.99), 200, 6, 6, findAndConvertImages(List.of())),
 
-                new CreateProductRequest("Dipirona", "Dipirona sódica 500mg, medicamento para dor e febre",
-                        BigDecimal.valueOf(5.99), 500, 8, 7),
-                new CreateProductRequest("Paracetamol", "Paracetamol 750mg, analgésico e antitérmico para adultos",
-                        BigDecimal.valueOf(6.99), 450, 9, 7));
+                new CreateProductRequest("Dipirona",
+                        "Dipirona sódica 500mg, medicamento para dor e febre",
+                        BigDecimal.valueOf(5.99), 500, 8, 7, findAndConvertImages(List.of())),
+                new CreateProductRequest("Paracetamol",
+                        "Paracetamol 750mg, analgésico e antitérmico para adultos",
+                        BigDecimal.valueOf(6.99), 450, 9, 7, findAndConvertImages(List.of())));
 
         for (CreateProductRequest product : products) {
             productService.createProduct(product);
         }
+    }
+
+    private List<String> findAndConvertImages(List<String> paths) {
+        List<String> results = new ArrayList<>();
+        for (String path : paths) {
+            try {
+                ClassPathResource resource = new ClassPathResource(IMAGE_FOLDER + File.separator + path);
+                byte[] imageBytes = resource.getInputStream().readAllBytes();
+                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                results.add(base64Image);
+            } catch (Exception e) {
+                System.err.println(String.format("Image %s not found", path));
+            }
+        }
+        return results;
     }
 }
