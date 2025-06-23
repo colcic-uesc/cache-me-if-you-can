@@ -66,6 +66,9 @@ public class Product {
     @JsonIgnoreProperties({ "product", "id" })
     private List<Offer> offers;
 
+    @OneToMany(mappedBy = "product")
+    private List<PriceHistory> history;
+
     public Product(String title, String description, LocalDate released, Brand brand,
             Category category, List<Image> images) {
         this.title = title;

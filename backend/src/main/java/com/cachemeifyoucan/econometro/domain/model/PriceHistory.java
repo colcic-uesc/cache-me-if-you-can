@@ -3,6 +3,8 @@ package com.cachemeifyoucan.econometro.domain.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class PriceHistory {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     Product product;
 
     @NotNull(message = "Price is required")
@@ -41,6 +44,12 @@ public class PriceHistory {
 
     public PriceHistory(Product product, BigDecimal price) {
         this.creationDate = LocalDate.now();
+        this.product = product;
+        this.price = price;
+    }
+
+    public PriceHistory(Product product, BigDecimal price, LocalDate date) {
+        this.creationDate = date;
         this.product = product;
         this.price = price;
     }
