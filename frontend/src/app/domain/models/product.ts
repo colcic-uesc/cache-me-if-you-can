@@ -1,3 +1,5 @@
+import { Image } from "./image";
+
 export interface Product {
     id: number;
     title: string;
@@ -9,5 +11,5 @@ export interface Product {
     enabled: boolean;
     brand: string;
     category: string;
-
+    images: Image[];
 }

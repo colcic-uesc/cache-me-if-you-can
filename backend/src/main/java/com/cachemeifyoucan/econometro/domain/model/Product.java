@@ -2,16 +2,20 @@ package com.cachemeifyoucan.econometro.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -69,7 +73,13 @@ public class Product {
     @JsonIgnoreProperties("parent")
     private Category category;
 
-    public Product(String title, String description, BigDecimal price, int stockQuantity, Brand brand, Category category) {
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
+    @JsonIgnoreProperties("product")
+    private List<Image> images;
+
+    public Product(String title, String description, BigDecimal price, int stockQuantity, Brand brand,
+            Category category, List<Image> images) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -78,6 +88,7 @@ public class Product {
         this.updatedAt = LocalDateTime.now();
         this.brand = brand;
         this.category = category;
+        this.images = images;
     }
 
 }
