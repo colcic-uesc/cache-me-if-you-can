@@ -1,0 +1,33 @@
+@if(product) {
+<h1>{{product.title}}</h1>
+<p>{{product.description}}</p>
+<span>{{product.released}}</span>
+
+<!-- Menor preço entre as ofertas -->
+
+@if(product.images) {
+  <!-- TODO permitir ver todas as imagens -->
+   <img
+   class="product-image"
+   [src]="'data:image/png;base64,' + product.images[0]"
+   />
+  }
+} @else {
+  <!-- produto sem img -->
+}
+
+<!-- Botão Criar Alerta -->
+
+<!-- Gráfico de histórico do produto -->
+
+
+<!-- Lista de ofertas -->
+<ul>
+  @for(offer of product.offers; track offer.sellerId) {
+    <li>
+      {{offer.sellerName}}
+      <img [src]="'data:image/svg+xml;base64,' + offer.sellerImage"/>
+      {{offer.price}}
+    </li>
+  }
+</ul>

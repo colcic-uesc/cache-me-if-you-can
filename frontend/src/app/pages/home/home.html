@@ -1,12 +1,14 @@
 <app-carousel></app-carousel>
 <h1>Início</h1>
 <ul>
-    @for (product of products; track product.id ) {
-    <li>
-      @if(product.images && product.images[0]) {
-        <img class="product-image" [src]="'data:image/png;base64,' + product.images[0].content">
-      }
-      {{product.title}}
-    </li>
-    }
+  @for (product of products; track product.id ) {
+  <li (click)="goToProduct(product.id)" class="product-container">
+    @if(product.images && product.images[0]) {
+    <img
+      class="product-image"
+      [src]="'data:image/png;base64,' + product.images[0].content"
+    />
+    } {{product.title}}
+  </li>
+  }
 </ul>

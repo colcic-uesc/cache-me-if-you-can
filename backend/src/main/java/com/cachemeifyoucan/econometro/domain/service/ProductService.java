@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
+import com.cachemeifyoucan.econometro.application.dto.ProductDetailedResponse;
 import com.cachemeifyoucan.econometro.application.dto.UpdateProductRequest;
 import com.cachemeifyoucan.econometro.domain.model.Brand;
 import com.cachemeifyoucan.econometro.domain.model.Category;
@@ -39,6 +40,19 @@ public class ProductService {
     public Product getProductById(long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
+    }
+
+    public ProductDetailedResponse getProductDetailed(long id) {
+        Product product = getProductById(id);
+
+        List<String> images = product.getImages().stream().map(img -> img.getContent()).toList();
+        List<ProductDetailedResponse.Offer> offers = product.getOffers().stream()
+                .map(offer -> new ProductDetailedResponse.Offer(offer.getSeller().getId(), offer.getSeller().getName(),
+                        offer.getSeller().getImage().getContent(), offer.getPrice()))
+                .toList();
+
+        return new ProductDetailedResponse(product.getTitle(), product.getDescription(), product.getReleased(),
+                product.getBrand(), product.getCategory(), product.getBestPrice(), images, offers, List.of());
     }
 
     public List<Product> getAllProducts(String query) {

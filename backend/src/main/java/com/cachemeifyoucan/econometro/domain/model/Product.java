@@ -1,5 +1,6 @@
 package com.cachemeifyoucan.econometro.domain.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -73,6 +74,16 @@ public class Product {
         this.brand = brand;
         this.category = category;
         this.images = images;
+    }
+
+    public BigDecimal getBestPrice() {
+        if (offers == null) {
+            return null;
+        }
+        return offers.stream()
+                .map(Offer::getPrice)
+                .min(BigDecimal::compareTo)
+                .orElse(null);
     }
 
 }
