@@ -2,14 +2,10 @@ package com.cachemeifyoucan.econometro.infrastructure.config;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
@@ -19,13 +15,16 @@ import com.cachemeifyoucan.econometro.application.dto.BrandRequest;
 import com.cachemeifyoucan.econometro.application.dto.CategoryRequest;
 import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
 import com.cachemeifyoucan.econometro.application.dto.CreateUserRequest;
+import com.cachemeifyoucan.econometro.application.dto.SellerRequest;
 import com.cachemeifyoucan.econometro.domain.repository.BrandRepository;
 import com.cachemeifyoucan.econometro.domain.repository.CategoryRepository;
 import com.cachemeifyoucan.econometro.domain.repository.ProductRepository;
+import com.cachemeifyoucan.econometro.domain.repository.SellerRepository;
 import com.cachemeifyoucan.econometro.domain.repository.UserRepository;
 import com.cachemeifyoucan.econometro.domain.service.BrandService;
 import com.cachemeifyoucan.econometro.domain.service.CategoryService;
 import com.cachemeifyoucan.econometro.domain.service.ProductService;
+import com.cachemeifyoucan.econometro.domain.service.SellerService;
 import com.cachemeifyoucan.econometro.domain.service.UserService;
 
 @Component
@@ -42,10 +41,13 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final CategoryService categoryService;
     private final ProductRepository productRepository;
     private final ProductService productService;
+    private final SellerRepository sellerRepository;
+    private final SellerService sellerService;
 
     public DatabaseInitializer(UserRepository userRepository, UserService userService, BrandRepository brandRepository,
             BrandService brandService, CategoryRepository categoryRepository, CategoryService categoryService,
-            ProductRepository productRepository, ProductService productService) {
+            ProductRepository productRepository, ProductService productService, SellerService sellerService,
+            SellerRepository sellerRepository) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.brandRepository = brandRepository;
@@ -54,6 +56,8 @@ public class DatabaseInitializer implements CommandLineRunner {
         this.categoryService = categoryService;
         this.productRepository = productRepository;
         this.productService = productService;
+        this.sellerService = sellerService;
+        this.sellerRepository = sellerRepository;
     }
 
     @Override
@@ -62,6 +66,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         createBrands();
         createCategories();
         createProducts();
+        createSellers();
     }
 
     private void createUsers() {
@@ -180,18 +185,39 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
     }
 
+    private void createSellers() {
+        if (sellerRepository.count() > 0) {
+            return;
+        }
+        List<SellerRequest> sellers = List.of(
+                new SellerRequest("Americanas", "00.776.574/0006-60", findAndConvertImage("logos/americanas.svg")),
+                new SellerRequest("Magazine Luiza", "47.960.950/0001-21", findAndConvertImage("logos/magazine.svg")),
+                new SellerRequest("Mercado Livre", "03.007.331/0001-41",
+                        findAndConvertImage("logos/mercado-livre.svg")),
+                new SellerRequest("Amazon", "15.436.940/0001-03", findAndConvertImage("logos/amazon.svg")),
+                new SellerRequest("Submarino", "00.776.574/0006-60", findAndConvertImage("logos/submarino.svg")));
+
+        for (SellerRequest seller : sellers) {
+            sellerService.createSeller(seller);
+        }
+    }
+
     private List<String> findAndConvertImages(List<String> paths) {
         List<String> results = new ArrayList<>();
         for (String path : paths) {
-            try {
-                ClassPathResource resource = new ClassPathResource(IMAGE_FOLDER + File.separator + path);
-                byte[] imageBytes = resource.getInputStream().readAllBytes();
-                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                results.add(base64Image);
-            } catch (Exception e) {
-                System.err.println(String.format("Image %s not found", path));
-            }
+            results.add(findAndConvertImage(path));
         }
         return results;
+    }
+
+    private String findAndConvertImage(String path) {
+        try {
+            ClassPathResource resource = new ClassPathResource(IMAGE_FOLDER + File.separator + path);
+            byte[] imageBytes = resource.getInputStream().readAllBytes();
+            return Base64.getEncoder().encodeToString(imageBytes);
+        } catch (Exception e) {
+            System.err.println(String.format("Image %s not found", path));
+            return null;
+        }
     }
 }

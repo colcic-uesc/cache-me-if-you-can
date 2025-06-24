@@ -75,7 +75,6 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
-    @JsonIgnoreProperties("product")
     private List<Image> images;
 
     public Product(String title, String description, BigDecimal price, int stockQuantity, Brand brand,
