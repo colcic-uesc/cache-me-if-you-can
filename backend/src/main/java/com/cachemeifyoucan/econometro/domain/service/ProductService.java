@@ -1,6 +1,5 @@
 package com.cachemeifyoucan.econometro.domain.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class ProductService {
         Category category = categoryService.getCategoryById(dto.categoryId());
         List<Image> images = dto.images().stream().map(content -> new Image(content)).toList();
 
-        Product product = new Product(dto.title(), dto.description(), dto.price(), dto.stockQuantity(), brand,
+        Product product = new Product(dto.title(), dto.description(), dto.released(), brand,
                 category, images);
 
         return productRepository.save(product);
@@ -53,12 +52,9 @@ public class ProductService {
         Product product = getProductById(id);
         product.setTitle(dto.title());
         product.setDescription(dto.description());
-        product.setPrice(dto.price());
-        product.setStockQuantity(dto.stockQuantity());
         product.setEnabled(dto.enabled() != null ? dto.enabled() : product.isEnabled());
         product.setBrand(brandService.getBrandById(dto.brandId()));
         product.setCategory(categoryService.getCategoryById(dto.categoryId()));
-        product.setUpdatedAt(LocalDateTime.now());
 
         return productRepository.save(product);
     }

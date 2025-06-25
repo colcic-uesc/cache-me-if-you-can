@@ -1,7 +1,6 @@
 package com.cachemeifyoucan.econometro.domain.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,8 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -42,22 +39,9 @@ public class Product {
     @NotBlank(message = "Description cannot be blank")
     private String description;
 
-    @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be higher than zero")
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
-
-    @Min(value = 0, message = "Stock quantity cannot be less than zero")
-    @Column(name = "stock_quantity", nullable = false)
-    private int stockQuantity;
-
-    @Column(name = "created_at")
-    @NotNull(message = "Created at cannot be null")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @NotNull(message = "Updated at cannot be null")
-    private LocalDateTime updatedAt;
+    @Column(name = "released")
+    @NotNull(message = "Release date cannot be null")
+    private LocalDate released;
 
     @Column(name = "is_active")
     private boolean enabled = true;
@@ -75,17 +59,17 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
-    @JsonIgnoreProperties("product")
     private List<Image> images;
 
-    public Product(String title, String description, BigDecimal price, int stockQuantity, Brand brand,
+    @OneToMany(mappedBy = "product")
+    @JsonIgnoreProperties({"product", "id"})
+    private List<Offer> offers;
+
+    public Product(String title, String description, LocalDate released, Brand brand,
             Category category, List<Image> images) {
         this.title = title;
         this.description = description;
-        this.price = price;
-        this.stockQuantity = stockQuantity;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.released = released;
         this.brand = brand;
         this.category = category;
         this.images = images;
