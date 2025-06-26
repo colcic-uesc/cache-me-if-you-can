@@ -26,4 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             + "or p.category.name ilike concat('%', :query, '%')"
             + "or p.brand.name ilike concat('%', :query, '%')")
     List<Product> findByTextQuery(@Param("query") String query);
+
+    List<Product> findByEnabled(boolean enabled);
+
 }

@@ -12,6 +12,7 @@ import com.cachemeifyoucan.econometro.domain.repository.OfferRepository;
 import com.cachemeifyoucan.econometro.domain.repository.ProductRepository;
 import com.cachemeifyoucan.econometro.domain.repository.SellerRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class OfferService {
     private final ProductRepository productRepository;
     private final SellerRepository sellerRepository;
 
+    @Transactional
     public Offer createOffer(CreateOfferRequest dto) {
         if (offerRepository.existsById(new OfferId(dto.productId(), dto.sellerId()))) {
             throw new IllegalArgumentException("Offer with this name already exists");
@@ -32,8 +34,7 @@ public class OfferService {
         Seller seller = sellerRepository.findById(dto.sellerId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found for id " + dto.sellerId()));
 
-        Offer offer = new Offer(dto.price(), product, seller);
-        return offerRepository.save(offer);
+        return offerRepository.save(new Offer(dto.price(), product, seller));
     }
 
     public Offer getOfferById(OfferId id) {
@@ -41,6 +42,7 @@ public class OfferService {
                 .orElseThrow(() -> new IllegalArgumentException("Offer not found for product id " + id.getProductId() + ", seller id " + id.getSellerId()));
     }
 
+    @Transactional
     public Offer updateOffer(long productId, long sellerId, UpdateOfferRequest dto) {
         Offer offer = getOfferById(new OfferId(productId, sellerId));
 

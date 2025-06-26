@@ -1,5 +1,6 @@
 package com.cachemeifyoucan.econometro.domain.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class Product {
     private List<Image> images;
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnoreProperties({"product", "id"})
+    @JsonIgnoreProperties({ "product", "id" })
     private List<Offer> offers;
 
     public Product(String title, String description, LocalDate released, Brand brand,
@@ -73,6 +74,17 @@ public class Product {
         this.brand = brand;
         this.category = category;
         this.images = images;
+    }
+
+    public BigDecimal getBestPrice() {
+        if (offers == null) {
+            return null;
+        }
+        return offers.stream()
+                .filter(Offer::isEnabled)
+                .map(Offer::getPrice)
+                .min(BigDecimal::compareTo)
+                .orElse(null);
     }
 
 }
