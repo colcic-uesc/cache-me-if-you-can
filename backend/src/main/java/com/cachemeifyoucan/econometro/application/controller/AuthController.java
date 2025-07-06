@@ -34,6 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Authenticate user", description = "Authenticates a user, returning a JWT for later authorization")
+    @PreAuthorize("!isAuthenticated()")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.email(),
                 request.password());
@@ -48,6 +49,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @Operation(summary = "Create user", description = "Creates a user with the provided information")
+    @PreAuthorize("!isAuthenticated()")
     public ResponseEntity<Void> create(@Valid @RequestBody CreateUserRequest user) {
         userService.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);

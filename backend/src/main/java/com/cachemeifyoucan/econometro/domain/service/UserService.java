@@ -37,9 +37,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void makeUserAdmin(String email) {
+    public void changeUserRole(String email, UserRole role) {
         User user = findByEmail(email);
-        user.setRole(UserRole.ADMIN);
+        user.setRole(role);
         userRepository.save(user);
     }
 
