@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -18,9 +19,12 @@ import com.cachemeifyoucan.econometro.application.dto.CreateOfferRequest;
 import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
 import com.cachemeifyoucan.econometro.application.dto.CreateUserRequest;
 import com.cachemeifyoucan.econometro.application.dto.SellerRequest;
+import com.cachemeifyoucan.econometro.domain.model.PriceHistory;
+import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.repository.BrandRepository;
 import com.cachemeifyoucan.econometro.domain.repository.CategoryRepository;
 import com.cachemeifyoucan.econometro.domain.repository.OfferRepository;
+import com.cachemeifyoucan.econometro.domain.repository.PriceHistoryRepository;
 import com.cachemeifyoucan.econometro.domain.repository.ProductRepository;
 import com.cachemeifyoucan.econometro.domain.repository.SellerRepository;
 import com.cachemeifyoucan.econometro.domain.repository.UserRepository;
@@ -50,6 +54,9 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final SellerService sellerService;
     private final OfferRepository offerRepository;
     private final OfferService offerService;
+    private final PriceHistoryRepository historyRepository; 
+
+    private List<Product> products;
 
     @Override
     public void run(String... args) throws Exception {
@@ -59,6 +66,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         createProducts();
         createSellers();
         createOffers();
+        createPriceHistory();
     }
 
     private void createUsers() {
@@ -122,7 +130,9 @@ public class DatabaseInitializer implements CommandLineRunner {
             return;
         }
 
-        List<CreateProductRequest> products = List.of(
+        products = new ArrayList<>();
+
+        List<CreateProductRequest> productsToCreate = List.of(
                 new CreateProductRequest("Galaxy S24",
                         "Smartphone Samsung Galaxy S24 com tela AMOLED e câmera tripla",
                         LocalDate.now(), 1, 3,
@@ -172,8 +182,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                         "Paracetamol 750mg, analgésico e antitérmico para adultos",
                         LocalDate.now(), 9, 7, findAndConvertImages(List.of())));
 
-        for (CreateProductRequest product : products) {
-            productService.createProduct(product);
+        for (CreateProductRequest product : productsToCreate) {
+            products.add(productService.createProduct(product));
         }
     }
 
@@ -260,6 +270,25 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         for (var offer : offers) {
             offerService.createOffer(offer);
+        }
+    }
+
+    private void createPriceHistory() {
+        if (historyRepository.count() > 0) {
+            return;
+        }
+
+        for (Product product : products) {
+            // gera histórico para os últimos 60 dias
+            for (int i = 59; i >= 0; i--) {
+                LocalDate date = LocalDate.now().minusDays(i);
+                BigDecimal bestPrice = Objects.requireNonNullElse(product.getBestPrice(), new BigDecimal(1500));
+                // Gera um fator aleatório entre -0.6 e +0.6
+                double randomFactor = (Math.random() * 1.2) - 0.6;
+                BigDecimal variation = bestPrice.multiply(BigDecimal.valueOf(randomFactor));
+                BigDecimal price = bestPrice.add(variation).max(BigDecimal.valueOf(1.0));
+                historyRepository.save(new PriceHistory(product, price, date));
+            }
         }
     }
 
