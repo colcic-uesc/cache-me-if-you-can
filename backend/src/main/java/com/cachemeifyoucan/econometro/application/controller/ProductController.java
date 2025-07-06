@@ -2,6 +2,7 @@ package com.cachemeifyoucan.econometro.application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
+import com.cachemeifyoucan.econometro.application.dto.ProductDetailedResponse;
 import com.cachemeifyoucan.econometro.application.dto.UpdateProductRequest;
 import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.service.ProductService;
@@ -30,6 +32,7 @@ public class ProductController {
 
     @PostMapping
     @Operation(summary = "Create Product", description = " Creates a product with the provided information")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody CreateProductRequest request) {
         Product product = productService.createProduct(request);
         return ResponseEntity
@@ -40,7 +43,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Product Detailed", description = "Retrieves a product with detailed information")
-    public ResponseEntity<?> getById(@PathVariable long id) {
+    public ResponseEntity<ProductDetailedResponse> getById(@PathVariable long id) {
         return ResponseEntity.ok(productService.getProductDetailed(id));
     }
 
@@ -52,12 +55,14 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update Product", description = "Updates a product with the provided information")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(@PathVariable long id, @Valid @RequestBody UpdateProductRequest request) {
         return ResponseEntity.ok(productService.updateProduct(id, request));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete Product", description = "Deletes a product by its ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable long id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -2,6 +2,7 @@ package com.cachemeifyoucan.econometro.application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ public class OfferController {
 
     @PostMapping
     @Operation(summary = "Create Offer", description = " Creates a offer with the provided information")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> create(@Valid @RequestBody CreateOfferRequest request) {
         Offer offer = offerService.createOffer(request);
         return ResponseEntity
@@ -35,6 +37,7 @@ public class OfferController {
 
     @PutMapping("/seller/{sellerId}/product/{productId}")
     @Operation(summary = "Update Offer", description = "Updates a offer with the provided information")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> update(long productId, long sellerId,
             @Valid @RequestBody UpdateOfferRequest request) {
         return ResponseEntity.ok(offerService.updateOffer(productId, sellerId, request));

@@ -2,6 +2,7 @@ package com.cachemeifyoucan.econometro.application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ public class SellerController {
 
     @PostMapping
     @Operation(summary = "Create Seller", description = " Creates a seller with the provided information")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody SellerRequest request) {
         Seller seller = sellerService.createSeller(request);
         return ResponseEntity
@@ -37,24 +39,28 @@ public class SellerController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Seller by ID", description = "Retrieves a seller by its ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getById(long id) {
         return ResponseEntity.ok(sellerService.getSellerById(id));
     }
 
     @GetMapping
     @Operation(summary = "Get All Sellers", description = "Retrieves all sellers")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(sellerService.getAllSellers());
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update Seller", description = "Updates a seller with the provided information")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(long id, @Valid @RequestBody SellerRequest request) {
         return ResponseEntity.ok(sellerService.updateSeller(id, request));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete Seller", description = "Deletes a seller by its ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(long id) {
         sellerService.deleteSeller(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

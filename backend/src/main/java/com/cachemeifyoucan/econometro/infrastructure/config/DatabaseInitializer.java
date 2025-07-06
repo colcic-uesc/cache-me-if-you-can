@@ -19,6 +19,7 @@ import com.cachemeifyoucan.econometro.application.dto.CreateOfferRequest;
 import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
 import com.cachemeifyoucan.econometro.application.dto.CreateUserRequest;
 import com.cachemeifyoucan.econometro.application.dto.SellerRequest;
+import com.cachemeifyoucan.econometro.domain.enums.UserRole;
 import com.cachemeifyoucan.econometro.domain.model.PriceHistory;
 import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.repository.BrandRepository;
@@ -86,7 +87,10 @@ public class DatabaseInitializer implements CommandLineRunner {
         for (CreateUserRequest user : users) {
             userService.createUser(user);
         }
-        userService.makeUserAdmin("admin@econometro.com");
+        userService.changeUserRole("admin@econometro.com", UserRole.ADMIN);
+        userService.changeUserRole("bob.smith@example.com", UserRole.SELLER);
+        userService.changeUserRole("charlie.lee@example.com", UserRole.SELLER);
+        userService.changeUserRole("diana.evans@example.com", UserRole.SELLER);
     }
 
     private void createBrands() {

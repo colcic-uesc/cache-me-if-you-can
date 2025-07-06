@@ -2,6 +2,7 @@ package com.cachemeifyoucan.econometro.application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ public class BrandController {
 
     @PostMapping
     @Operation(summary = "Create Brand", description = " Creates a brand with the provided information")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody BrandRequest request) {
         Brand brand = brandService.createBrand(request);
         return ResponseEntity
@@ -37,24 +39,28 @@ public class BrandController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Brand by ID", description = "Retrieves a brand by its ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getById(long id) {
         return ResponseEntity.ok(brandService.getBrandById(id));
     }
 
     @GetMapping
     @Operation(summary = "Get All Brands", description = "Retrieves all brands")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(brandService.getAllBrands());
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update Brand", description = "Updates a brand with the provided information")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(long id, @Valid @RequestBody BrandRequest request) {
         return ResponseEntity.ok(brandService.updateBrand(id, request));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete Brand", description = "Deletes a brand by its ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(long id) {
         brandService.deleteBrand(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
