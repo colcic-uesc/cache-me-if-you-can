@@ -1,5 +1,12 @@
 package com.cachemeifyoucan.econometro.domain.model;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.cachemeifyoucan.econometro.domain.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,7 +28,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -36,6 +43,16 @@ public class User {
     @Nonnull
     private String password;
     @Nonnull
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }

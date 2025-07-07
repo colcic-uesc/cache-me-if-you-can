@@ -9,9 +9,7 @@ public record CreateOfferRequest(
 
         @NotNull(message = "Price is required") @DecimalMin(value = "0.0", inclusive = false, message = "Price must be higher than zero") BigDecimal price,
 
-        @NotNull(message = "Product is required") long productId,
-
-        @NotNull(message = "Seller is required") long sellerId
+        @NotNull(message = "Product is required") long productId
 
 ) {
 

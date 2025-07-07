@@ -33,4 +33,8 @@ public class Seller {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private Image image;
+
+    @OneToOne
+    @JoinColumn(name = "manager_id", unique = true, nullable = false)
+    private User manager;
 }
