@@ -13,7 +13,6 @@ import com.cachemeifyoucan.econometro.domain.enums.UserRole;
 import com.cachemeifyoucan.econometro.domain.model.User;
 import com.cachemeifyoucan.econometro.domain.repository.UserRepository;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 
 @Service

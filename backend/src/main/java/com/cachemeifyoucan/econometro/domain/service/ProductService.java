@@ -22,7 +22,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final BrandService brandService;
     private final CategoryService categoryService;
-    private final PriceHistoryService priceHistoryService;
 
     public Product createProduct(CreateProductRequest dto) {
         if (productRepository.existsByTitle(dto.title())) {
