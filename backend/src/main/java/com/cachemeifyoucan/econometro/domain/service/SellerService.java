@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.cachemeifyoucan.econometro.application.dto.SellerRequest;
 import com.cachemeifyoucan.econometro.domain.model.Image;
 import com.cachemeifyoucan.econometro.domain.model.Seller;
+import com.cachemeifyoucan.econometro.domain.model.User;
 import com.cachemeifyoucan.econometro.domain.repository.SellerRepository;
 
 import jakarta.transaction.Transactional;
@@ -16,16 +17,20 @@ import lombok.AllArgsConstructor;
 @Service
 public class SellerService {
     private final SellerRepository sellerRepository;
+    private final UserService userService;
 
     public Seller createSeller(SellerRequest dto) {
         if (sellerRepository.existsByName(dto.name())) {
             throw new IllegalArgumentException("Seller with this name already exists");
         }
 
+        User manager = userService.findById(dto.managerId());
+
         Seller seller = new Seller();
         seller.setName(dto.name());
         seller.setCnpj(dto.cnpj());
         seller.setImage(new Image(dto.imageContent()));
+        seller.setManager(manager);
         return sellerRepository.save(seller);
     }
 

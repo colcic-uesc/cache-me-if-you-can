@@ -13,6 +13,7 @@ import com.cachemeifyoucan.econometro.domain.enums.UserRole;
 import com.cachemeifyoucan.econometro.domain.model.User;
 import com.cachemeifyoucan.econometro.domain.repository.UserRepository;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -56,6 +57,10 @@ public class UserService {
         
         var details = (UserDetails) auth.getPrincipal();
         return findByEmail(details.getUsername());
+    }
+
+    public User findById(long id) { 
+        return userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("User not found with id: " + id));
     }
 
 }

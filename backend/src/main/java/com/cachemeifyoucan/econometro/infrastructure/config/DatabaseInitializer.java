@@ -7,10 +7,14 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.cachemeifyoucan.econometro.application.dto.BrandRequest;
@@ -22,6 +26,7 @@ import com.cachemeifyoucan.econometro.application.dto.SellerRequest;
 import com.cachemeifyoucan.econometro.domain.enums.UserRole;
 import com.cachemeifyoucan.econometro.domain.model.PriceHistory;
 import com.cachemeifyoucan.econometro.domain.model.Product;
+import com.cachemeifyoucan.econometro.domain.model.User;
 import com.cachemeifyoucan.econometro.domain.repository.BrandRepository;
 import com.cachemeifyoucan.econometro.domain.repository.CategoryRepository;
 import com.cachemeifyoucan.econometro.domain.repository.OfferRepository;
@@ -55,7 +60,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final SellerService sellerService;
     private final OfferRepository offerRepository;
     private final OfferService offerService;
-    private final PriceHistoryRepository historyRepository; 
+    private final PriceHistoryRepository historyRepository;
 
     private List<Product> products;
 
@@ -88,9 +93,12 @@ public class DatabaseInitializer implements CommandLineRunner {
             userService.createUser(user);
         }
         userService.changeUserRole("admin@econometro.com", UserRole.ADMIN);
+        userService.changeUserRole("alice.johnson@example.com", UserRole.SELLER);
         userService.changeUserRole("bob.smith@example.com", UserRole.SELLER);
         userService.changeUserRole("charlie.lee@example.com", UserRole.SELLER);
         userService.changeUserRole("diana.evans@example.com", UserRole.SELLER);
+        userService.changeUserRole("ethan.brown@example.com", UserRole.SELLER);
+
     }
 
     private void createBrands() {
@@ -196,12 +204,12 @@ public class DatabaseInitializer implements CommandLineRunner {
             return;
         }
         List<SellerRequest> sellers = List.of(
-                new SellerRequest("Americanas", "00.776.574/0006-60", findAndConvertImage("logos/americanas.svg")),
-                new SellerRequest("Magazine Luiza", "47.960.950/0001-21", findAndConvertImage("logos/magazine.svg")),
-                new SellerRequest("Mercado Livre", "03.007.331/0001-41",
+                new SellerRequest("Amazon", "15.436.940/0001-03", 3, findAndConvertImage("logos/amazon.svg")),
+                new SellerRequest("Americanas", "00.776.574/0006-60", 4, findAndConvertImage("logos/americanas.svg")),
+                new SellerRequest("Magazine Luiza", "47.960.950/0001-21", 5, findAndConvertImage("logos/magazine.svg")),
+                new SellerRequest("Mercado Livre", "03.007.331/0001-41", 6,
                         findAndConvertImage("logos/mercado-livre.svg")),
-                new SellerRequest("Amazon", "15.436.940/0001-03", findAndConvertImage("logos/amazon.svg")),
-                new SellerRequest("Submarino", "00.776.574/0006-60", findAndConvertImage("logos/submarino.svg")));
+                new SellerRequest("Submarino", "00.776.574/0006-60", 7, findAndConvertImage("logos/submarino.svg")));
 
         for (SellerRequest seller : sellers) {
             sellerService.createSeller(seller);
@@ -212,69 +220,75 @@ public class DatabaseInitializer implements CommandLineRunner {
         if (offerRepository.count() > 0) {
             return;
         }
+
+        var sellerOffers = new ArrayList<SellerOffers>();
+
         var offers = List.of(
-                // Galaxy S24
-                new CreateOfferRequest(new BigDecimal(3999.90), 1, 1),
-                new CreateOfferRequest(new BigDecimal(3989.00), 1, 2),
-                new CreateOfferRequest(new BigDecimal(4005.50), 1, 3),
+                new CreateOfferRequest(new BigDecimal(3999.90), 1),
+                new CreateOfferRequest(new BigDecimal(6999.00), 2),
+                new CreateOfferRequest(new BigDecimal(1599.00), 4),
+                new CreateOfferRequest(new BigDecimal(8980.00), 6),
+                new CreateOfferRequest(new BigDecimal(6005.00), 7),
+                new CreateOfferRequest(new BigDecimal(39.90), 11),
+                new CreateOfferRequest(new BigDecimal(13.00), 13));
+        sellerOffers.add(new SellerOffers(3, offers));
 
-                // iPhone 15
-                new CreateOfferRequest(new BigDecimal(6999.00), 2, 1),
-                new CreateOfferRequest(new BigDecimal(6980.00), 2, 2),
-                new CreateOfferRequest(new BigDecimal(7009.99), 2, 4),
+        offers = List.of(
+                new CreateOfferRequest(new BigDecimal(3989.00), 1),
+                new CreateOfferRequest(new BigDecimal(6980.00), 2),
+                new CreateOfferRequest(new BigDecimal(4985.00), 3),
+                new CreateOfferRequest(new BigDecimal(1299.00), 5),
+                new CreateOfferRequest(new BigDecimal(5999.00), 7),
+                new CreateOfferRequest(new BigDecimal(199.90), 10),
+                new CreateOfferRequest(new BigDecimal(99.90), 12),
+                new CreateOfferRequest(new BigDecimal(14.50), 14));
+        sellerOffers.add(new SellerOffers(4, offers));
 
-                // Pixel 8
-                new CreateOfferRequest(new BigDecimal(4999.00), 3, 3),
-                new CreateOfferRequest(new BigDecimal(5020.00), 3, 4),
-                new CreateOfferRequest(new BigDecimal(4985.00), 3, 2),
+        offers = List.of(
+                new CreateOfferRequest(new BigDecimal(4005.50), 1),
+                new CreateOfferRequest(new BigDecimal(4999.00), 3),
+                new CreateOfferRequest(new BigDecimal(1305.00), 5),
+                new CreateOfferRequest(new BigDecimal(3999.00), 8),
+                new CreateOfferRequest(new BigDecimal(48.00), 9),
+                new CreateOfferRequest(new BigDecimal(12.90), 13));
+        sellerOffers.add(new SellerOffers(5, offers));
 
-                // Moto G15
-                new CreateOfferRequest(new BigDecimal(1599.00), 4, 1),
-                new CreateOfferRequest(new BigDecimal(1580.00), 4, 5),
+        offers = List.of(
+                new CreateOfferRequest(new BigDecimal(7009.99), 2),
+                new CreateOfferRequest(new BigDecimal(5020.00), 3),
+                new CreateOfferRequest(new BigDecimal(8999.00), 6),
+                new CreateOfferRequest(new BigDecimal(4010.00), 8),
+                new CreateOfferRequest(new BigDecimal(202.00), 10),
+                new CreateOfferRequest(new BigDecimal(101.00), 12));
+        sellerOffers.add(new SellerOffers(6, offers));
 
-                // Redmi 13
-                new CreateOfferRequest(new BigDecimal(1299.00), 5, 2),
-                new CreateOfferRequest(new BigDecimal(1305.00), 5, 3),
+        offers = List.of(
+                new CreateOfferRequest(new BigDecimal(1580.00), 4),
+                new CreateOfferRequest(new BigDecimal(49.90), 9),
+                new CreateOfferRequest(new BigDecimal(38.00), 11),
+                new CreateOfferRequest(new BigDecimal(14.90), 14));
+        sellerOffers.add(new SellerOffers(7, offers));
 
-                // iPad Pro
-                new CreateOfferRequest(new BigDecimal(8999.00), 6, 4),
-                new CreateOfferRequest(new BigDecimal(8980.00), 6, 1),
-
-                // Galaxy Tab S9
-                new CreateOfferRequest(new BigDecimal(5999.00), 7, 2),
-                new CreateOfferRequest(new BigDecimal(6005.00), 7, 1),
-
-                // Pixel Tablet
-                new CreateOfferRequest(new BigDecimal(3999.00), 8, 3),
-                new CreateOfferRequest(new BigDecimal(4010.00), 8, 4),
-
-                // Capa Protetora
-                new CreateOfferRequest(new BigDecimal(49.90), 9, 5),
-                new CreateOfferRequest(new BigDecimal(48.00), 9, 3),
-
-                // Fone de Ouvido Bluetooth
-                new CreateOfferRequest(new BigDecimal(199.90), 10, 2),
-                new CreateOfferRequest(new BigDecimal(202.00), 10, 4),
-
-                // Camiseta Básica
-                new CreateOfferRequest(new BigDecimal(39.90), 11, 1),
-                new CreateOfferRequest(new BigDecimal(38.00), 11, 5),
-
-                // Calça Jeans
-                new CreateOfferRequest(new BigDecimal(99.90), 12, 2),
-                new CreateOfferRequest(new BigDecimal(101.00), 12, 4),
-
-                // Dipirona
-                new CreateOfferRequest(new BigDecimal(12.90), 13, 3),
-                new CreateOfferRequest(new BigDecimal(13.00), 13, 1),
-
-                // Paracetamol
-                new CreateOfferRequest(new BigDecimal(14.90), 14, 5),
-                new CreateOfferRequest(new BigDecimal(14.50), 14, 2));
-
-        for (var offer : offers) {
-            offerService.createOffer(offer);
+        for (var sellerOffer : sellerOffers) {
+            setLoggedInUser(sellerOffer.managerId());
+            for (CreateOfferRequest offer : sellerOffer.offers()) {
+                offerService.createOffer(offer);
+            }
         }
+    }
+
+    private record SellerOffers(long managerId, List<CreateOfferRequest> offers) {
+    }
+
+    private void setLoggedInUser(long id) {
+        Optional<User> optUser = userRepository.findById(id);
+        optUser.ifPresent(user -> {
+            var auth = new UsernamePasswordAuthenticationToken(
+                    user,
+                    null,
+                    List.of(new SimpleGrantedAuthority(user.getRole().name())));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        });
     }
 
     private void createPriceHistory() {
