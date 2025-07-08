@@ -34,7 +34,7 @@ public class BrandController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("Location", "/brands/" + brand.getId())
-                .body(brand.getId());
+                .build();
     }
 
     @GetMapping("/{id}")
@@ -55,7 +55,8 @@ public class BrandController {
     @Operation(summary = "Update Brand", description = "Updates a brand with the provided information")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(long id, @Valid @RequestBody BrandRequest request) {
-        return ResponseEntity.ok(brandService.updateBrand(id, request));
+        brandService.updateBrand(id, request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")

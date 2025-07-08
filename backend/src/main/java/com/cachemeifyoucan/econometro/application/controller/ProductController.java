@@ -1,5 +1,8 @@
 package com.cachemeifyoucan.econometro.application.controller;
 
+import java.net.URI;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
 import com.cachemeifyoucan.econometro.application.dto.ProductDetailedResponse;
+import com.cachemeifyoucan.econometro.application.dto.ProductResponse;
 import com.cachemeifyoucan.econometro.application.dto.UpdateProductRequest;
+import com.cachemeifyoucan.econometro.domain.model.Offer;
 import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.service.ProductService;
 
@@ -33,12 +38,10 @@ public class ProductController {
     @PostMapping
     @Operation(summary = "Create Product", description = " Creates a product with the provided information")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody CreateProductRequest request) {
+    public ResponseEntity<Void> create(@Valid @RequestBody CreateProductRequest request) {
         Product product = productService.createProduct(request);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .header("Location", "/products/" + product.getId())
-                .body(product.getId());
+        URI location = URI.create("/products/" + product.getId());
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")
@@ -49,21 +52,39 @@ public class ProductController {
 
     @GetMapping
     @Operation(summary = "Get All Products", description = "Retrieves all products")
-    public ResponseEntity<?> getAll(@RequestParam(required = false) String query) {
-        return ResponseEntity.ok(productService.getAllProducts(query));
+    public ResponseEntity<List<ProductResponse>> getAll(@RequestParam(required = false) String query) {
+
+        List<ProductResponse> dto = productService.getAllProducts(query).stream()
+                .map(product -> {
+                    String image = product.getImages() == null || product.getImages().isEmpty()
+                            ? null
+                            : product.getImages().get(0).getContent();
+
+                    Offer bestOffer = product.getBestOffer();
+                    String seller = bestOffer == null ? null : bestOffer.getSeller().getName();
+                    return new ProductResponse(
+                            product.getId(),
+                            product.getTitle(),
+                            image,
+                            product.getBestPrice(),
+                            seller);
+                })
+                .toList();
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update Product", description = "Updates a product with the provided information")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> update(@PathVariable long id, @Valid @RequestBody UpdateProductRequest request) {
-        return ResponseEntity.ok(productService.updateProduct(id, request));
+    public ResponseEntity<Void> update(@PathVariable long id, @Valid @RequestBody UpdateProductRequest request) {
+        productService.updateProduct(id, request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete Product", description = "Deletes a product by its ID")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

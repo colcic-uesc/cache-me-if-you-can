@@ -33,10 +33,10 @@ public class OfferController {
     @Operation(summary = "Create Offer", description = " Creates a offer with the provided information")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> create(@Valid @RequestBody CreateOfferRequest request) {
-        Offer offer = offerService.createOffer(request);
+        offerService.createOffer(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(offer.getId());
+                .build();
     }
 
     @GetMapping
@@ -50,6 +50,7 @@ public class OfferController {
     @Operation(summary = "Update Offer", description = "Updates a offer with the provided information")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> update(@Valid @RequestBody UpdateOfferRequest request) {
-        return ResponseEntity.ok(offerService.updateOffer(request));
+        offerService.updateOffer(request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

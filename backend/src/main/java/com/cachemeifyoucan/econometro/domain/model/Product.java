@@ -80,13 +80,17 @@ public class Product {
     }
 
     public BigDecimal getBestPrice() {
+        Offer bestOffer = getBestOffer();
+        return bestOffer == null ? null : bestOffer.getPrice();
+    }
+
+    public Offer getBestOffer() {
         if (offers == null) {
             return null;
         }
         return offers.stream()
                 .filter(Offer::isEnabled)
-                .map(Offer::getPrice)
-                .min(BigDecimal::compareTo)
+                .min((offer, other) -> offer.getPrice().compareTo(other.getPrice()) )
                 .orElse(null);
     }
 
