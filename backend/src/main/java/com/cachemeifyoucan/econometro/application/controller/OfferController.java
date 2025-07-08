@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,10 +33,10 @@ public class OfferController {
     @Operation(summary = "Create Offer", description = " Creates a offer with the provided information")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> create(@Valid @RequestBody CreateOfferRequest request) {
-        Offer offer = offerService.createOffer(request);
+        offerService.createOffer(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(offer.getId());
+                .build();
     }
 
     @GetMapping
@@ -51,6 +50,7 @@ public class OfferController {
     @Operation(summary = "Update Offer", description = "Updates a offer with the provided information")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> update(@Valid @RequestBody UpdateOfferRequest request) {
-        return ResponseEntity.ok(offerService.updateOffer(request));
+        offerService.updateOffer(request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

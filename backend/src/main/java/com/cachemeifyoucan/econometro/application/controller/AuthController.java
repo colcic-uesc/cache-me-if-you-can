@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cachemeifyoucan.econometro.application.dto.CreateUserRequest;
 import com.cachemeifyoucan.econometro.application.dto.LoginRequest;
+import com.cachemeifyoucan.econometro.application.dto.UserResponse;
 import com.cachemeifyoucan.econometro.domain.model.User;
 import com.cachemeifyoucan.econometro.domain.service.UserService;
 import com.cachemeifyoucan.econometro.infrastructure.security.JWTUtil;
@@ -57,8 +58,9 @@ public class AuthController {
 
     @GetMapping("/user")
     @PreAuthorize("isAuthenticated()")
-    public User getUser() {
-        return userService.getLoggedInUser();
+    public UserResponse getUser() {
+        User user = userService.getLoggedInUser();
+        return new UserResponse(user.getId(), user.getName(), user.getEmail());
     }
 
 }

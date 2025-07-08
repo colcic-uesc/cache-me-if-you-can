@@ -33,7 +33,7 @@ public class CategoryController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("Location", "/categories/" + categories.getId())
-                .body(categories.getId());
+                .build();
     }
 
     @GetMapping("/{id}")
@@ -53,7 +53,8 @@ public class CategoryController {
     @Operation(summary = "Update Category", description = "Updates a category with the provided information")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(long id, @Valid @RequestBody CategoryRequest request) {
-        return ResponseEntity.ok(categoryService.updateCategory(id, request));
+        categoryService.updateCategory(id, request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
