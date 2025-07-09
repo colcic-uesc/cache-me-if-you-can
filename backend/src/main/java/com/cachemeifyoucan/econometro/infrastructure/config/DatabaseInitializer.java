@@ -17,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.cachemeifyoucan.econometro.application.dto.AlertRequest;
 import com.cachemeifyoucan.econometro.application.dto.BrandRequest;
 import com.cachemeifyoucan.econometro.application.dto.CategoryRequest;
 import com.cachemeifyoucan.econometro.application.dto.CreateOfferRequest;
@@ -27,6 +28,7 @@ import com.cachemeifyoucan.econometro.domain.enums.UserRole;
 import com.cachemeifyoucan.econometro.domain.model.PriceHistory;
 import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.model.User;
+import com.cachemeifyoucan.econometro.domain.repository.AlertRepository;
 import com.cachemeifyoucan.econometro.domain.repository.BrandRepository;
 import com.cachemeifyoucan.econometro.domain.repository.CategoryRepository;
 import com.cachemeifyoucan.econometro.domain.repository.OfferRepository;
@@ -34,6 +36,7 @@ import com.cachemeifyoucan.econometro.domain.repository.PriceHistoryRepository;
 import com.cachemeifyoucan.econometro.domain.repository.ProductRepository;
 import com.cachemeifyoucan.econometro.domain.repository.SellerRepository;
 import com.cachemeifyoucan.econometro.domain.repository.UserRepository;
+import com.cachemeifyoucan.econometro.domain.service.AlertService;
 import com.cachemeifyoucan.econometro.domain.service.BrandService;
 import com.cachemeifyoucan.econometro.domain.service.CategoryService;
 import com.cachemeifyoucan.econometro.domain.service.OfferService;
@@ -61,6 +64,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final OfferRepository offerRepository;
     private final OfferService offerService;
     private final PriceHistoryRepository historyRepository;
+    private final AlertRepository alertRepository;
+    private final AlertService alertService;
 
     private List<Product> products;
 
@@ -73,6 +78,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         createSellers();
         createOffers();
         createPriceHistory();
+        createAlerts();
     }
 
     private void createUsers() {
@@ -306,6 +312,30 @@ public class DatabaseInitializer implements CommandLineRunner {
                 BigDecimal variation = bestPrice.multiply(BigDecimal.valueOf(randomFactor));
                 BigDecimal price = bestPrice.add(variation).max(BigDecimal.valueOf(1.0));
                 historyRepository.save(new PriceHistory(product, price, date));
+            }
+        }
+    }
+
+    private record UserAlerts(long userId, List<AlertRequest> alerts) {
+    }
+    private void createAlerts(){
+        if (alertRepository.count() > 0) {
+            return;
+        }
+
+        var userAlerts = new ArrayList<UserAlerts>();
+
+        var alerts = List.of(
+                new AlertRequest(new BigDecimal(3499.90), 1),
+                new AlertRequest(new BigDecimal(7099.90), 2)
+                );
+
+        userAlerts.add(new UserAlerts(2, alerts));
+
+        for (var userAlert : userAlerts) {
+            setLoggedInUser(userAlert.userId());
+            for (AlertRequest alert : userAlert.alerts()) {
+                alertService.createAlert(alert);
             }
         }
     }

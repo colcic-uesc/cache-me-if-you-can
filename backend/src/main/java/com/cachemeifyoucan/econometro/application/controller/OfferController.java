@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cachemeifyoucan.econometro.application.dto.CreateOfferRequest;
 import com.cachemeifyoucan.econometro.application.dto.OfferResponse;
 import com.cachemeifyoucan.econometro.application.dto.UpdateOfferRequest;
-import com.cachemeifyoucan.econometro.domain.model.Offer;
 import com.cachemeifyoucan.econometro.domain.service.OfferService;
 
 import io.swagger.v3.oas.annotations.Operation;
