@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public record OfferResponse(
     long productId,
-    String productTittle,
+    String productTitle,
     BigDecimal price,
     boolean enabled
 ) {
