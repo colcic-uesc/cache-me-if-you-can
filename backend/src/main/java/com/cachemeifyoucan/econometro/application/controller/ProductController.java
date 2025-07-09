@@ -52,9 +52,9 @@ public class ProductController {
 
     @GetMapping
     @Operation(summary = "Get All Products", description = "Retrieves all products")
-    public ResponseEntity<List<ProductResponse>> getAll(@RequestParam(required = false) String query) {
+    public ResponseEntity<List<ProductResponse>> getAll(@RequestParam(required = false) String query, @RequestParam(defaultValue = "0") long categoryId, @RequestParam(defaultValue = "0") long brandId) {
 
-        List<ProductResponse> dto = productService.getAllProducts(query).stream()
+        List<ProductResponse> dto = productService.searchProducts(query, categoryId, brandId).stream()
                 .map(product -> {
                     String image = product.getImages() == null || product.getImages().isEmpty()
                             ? null
@@ -72,6 +72,7 @@ public class ProductController {
                 .toList();
         return ResponseEntity.ok(dto);
     }
+
 
     @PutMapping("/{id}")
     @Operation(summary = "Update Product", description = "Updates a product with the provided information")
