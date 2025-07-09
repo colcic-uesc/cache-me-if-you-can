@@ -60,11 +60,9 @@ public class ProductService {
                 product.getBrand(), product.getCategory(), product.getBestPrice(), images, offers, priceHistory);
     }
 
-    public List<Product> getAllProducts(String query) {
-        if (query == null || query.isEmpty()) {
-            return productRepository.findAll();
-        }
-        return productRepository.findByTextQuery(query);
+    public List<Product> searchProducts(String query, long categoryId, long brandId) {
+        String textQuery = query == null || query.isEmpty() ? null : query;
+        return productRepository.search(textQuery, categoryId, brandId, true);
     }
 
     public Product updateProduct(long id, UpdateProductRequest dto) {

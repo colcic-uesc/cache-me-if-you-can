@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cachemeifyoucan.econometro.application.dto.AlertRequest;
 import com.cachemeifyoucan.econometro.application.dto.AlertResponse;
-import com.cachemeifyoucan.econometro.domain.model.AlertId;
 import com.cachemeifyoucan.econometro.domain.service.AlertService;
 
 import io.swagger.v3.oas.annotations.Operation;
