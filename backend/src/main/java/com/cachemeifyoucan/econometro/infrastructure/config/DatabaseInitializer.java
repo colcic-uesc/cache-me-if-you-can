@@ -94,6 +94,11 @@ public class DatabaseInitializer implements CommandLineRunner {
         users.add(new CreateUserRequest("Charlie Lee", "charlie.lee@example.com", "charliepwd"));
         users.add(new CreateUserRequest("Diana Evans", "diana.evans@example.com", "diana2024"));
         users.add(new CreateUserRequest("Ethan Brown", "ethan.brown@example.com", "ethanpass"));
+        users.add(new CreateUserRequest("Fernanda Souza", "fernanda.souza@example.com", "fernandapass"));
+        users.add(new CreateUserRequest("Gabriel Costa", "gabriel.costa@example.com", "gabriel123"));
+        users.add(new CreateUserRequest("Helena Martins", "helena.martins@example.com", "helenapwd"));
+        users.add(new CreateUserRequest("Igor Silva", "igor.silva@example.com", "igorsenha"));
+        users.add(new CreateUserRequest("Juliana Rocha", "juliana.rocha@example.com", "julianapass"));
 
         for (CreateUserRequest user : users) {
             userService.createUser(user);
@@ -157,48 +162,48 @@ public class DatabaseInitializer implements CommandLineRunner {
                         findAndConvertImages(List.of("galaxyS24.png", "galaxyS24-2.jpg"))),
                 new CreateProductRequest("iPhone 15",
                         "Apple iPhone 15 com processador A17 Bionic e câmera avançada",
-                        LocalDate.now(), 2, 3, findAndConvertImages(List.of())),
+                        LocalDate.now(), 2, 3, findAndConvertImages(List.of("iphone15.png", "iphone15-2.png", "iphone15-3.png"))),
                 new CreateProductRequest("Pixel 8",
                         "Google Pixel 8 com Android puro e câmera de alta resolução",
-                        LocalDate.now(), 3, 3, findAndConvertImages(List.of())),
+                        LocalDate.now(), 3, 3, findAndConvertImages(List.of("pixel8.png", "pixel8-2.png"))),
                 new CreateProductRequest("Moto G15",
                         "Motorola Moto G15 com bateria de longa duração e tela grande",
-                        LocalDate.now(), 4, 3, findAndConvertImages(List.of())),
+                        LocalDate.now(), 4, 3, findAndConvertImages(List.of("motog15.png", "motog15-2.png", "motog15-3.png"))),
                 new CreateProductRequest("Redmi 13",
                         "Xiaomi Redmi 13 com ótimo custo-benefício e desempenho eficiente",
-                        LocalDate.now(), 5, 3, findAndConvertImages(List.of())),
+                        LocalDate.now(), 5, 3, findAndConvertImages(List.of("redmi13.png", "redmi13-2.png"))),
 
                 new CreateProductRequest("iPad Pro",
                         "Tablet avançado da Apple com tela Liquid Retina e chip M2",
-                        LocalDate.now(), 2, 4, findAndConvertImages(List.of())),
+                        LocalDate.now(), 2, 4, findAndConvertImages(List.of("ipadpro.png", "ipadpro-2.png"))),
                 new CreateProductRequest("Galaxy Tab S9",
                         "Tablet Samsung Galaxy Tab S9 com S Pen e tela AMOLED",
-                        LocalDate.now(), 1, 4, findAndConvertImages(List.of())),
+                        LocalDate.now(), 1, 4, findAndConvertImages(List.of("galaxytabS9.png", "galaxytabS9-2.png"))),
                 new CreateProductRequest("Pixel Tablet",
                         "Tablet Google Pixel com integração ao ecossistema Android",
-                        LocalDate.now(), 3, 4, findAndConvertImages(List.of())),
+                        LocalDate.now(), 3, 4, findAndConvertImages(List.of("pixelTablet.png", "pixelTablet-2.png"))),
 
                 new CreateProductRequest("Capa Protetora",
                         "Capa protetora resistente para smartphones de diversas marcas",
                         LocalDate.now(),
-                        1, 5, findAndConvertImages(List.of())),
+                        1, 5, findAndConvertImages(List.of("capaProtetora.png", "capaProtetora-2.png", "capaProtetora-3.png"))),
                 new CreateProductRequest("Fone de Ouvido Bluetooth",
                         "Fone de ouvido Bluetooth com cancelamento de ruído e bateria duradoura",
-                        LocalDate.now(), 4, 5, findAndConvertImages(List.of())),
+                        LocalDate.now(), 4, 5, findAndConvertImages(List.of("fone.png", "fone-2.png"))),
 
                 new CreateProductRequest("Camiseta Básica",
                         "Camiseta básica de algodão confortável e disponível em várias cores",
-                        LocalDate.now(), 7, 6, findAndConvertImages(List.of())),
+                        LocalDate.now(), 7, 6, findAndConvertImages(List.of("camisa-branca.png", "camisa-branca-2.png", "camisa-laranja.png", "camisa-azul.png"))),
                 new CreateProductRequest("Calça Jeans",
-                        "Calça jeans masculina de alta qualidade e modelagem moderna",
-                        LocalDate.now(), 6, 6, findAndConvertImages(List.of())),
+                        "Calça jeans feminina de alta qualidade e modelagem moderna",
+                        LocalDate.now(), 6, 6, findAndConvertImages(List.of("jeans-1.png", "jeans.png", "jeans-2.png"))),
 
                 new CreateProductRequest("Dipirona",
                         "Dipirona sódica 500mg, medicamento para dor e febre",
-                        LocalDate.now(), 8, 7, findAndConvertImages(List.of())),
+                        LocalDate.now(), 8, 7, findAndConvertImages(List.of("dipirona.png", "dipirona-2.png"))),
                 new CreateProductRequest("Paracetamol",
-                        "Paracetamol 750mg, analgésico e antitérmico para adultos",
-                        LocalDate.now(), 9, 7, findAndConvertImages(List.of())));
+                        "Paracetamol 500mg, analgésico e antitérmico para adultos",
+                        LocalDate.now(), 9, 7, findAndConvertImages(List.of("paracetamol.png", "paracetamol-2.png"))));
 
         for (CreateProductRequest product : productsToCreate) {
             products.add(productService.createProduct(product));
@@ -331,6 +336,36 @@ public class DatabaseInitializer implements CommandLineRunner {
                 );
 
         userAlerts.add(new UserAlerts(2, alerts));
+        
+        var alertsUser8 = List.of(
+            new AlertRequest(new BigDecimal(40.00), 11),
+            new AlertRequest(new BigDecimal(14.00), 13)
+        );
+        userAlerts.add(new UserAlerts(8, alertsUser8));
+
+        var alertsUser9 = List.of(
+            new AlertRequest(new BigDecimal(100.00), 12),
+            new AlertRequest(new BigDecimal(200.00), 10)
+        );
+        userAlerts.add(new UserAlerts(9, alertsUser9));
+
+        var alertsUser10 = List.of(
+            new AlertRequest(new BigDecimal(48.00), 9),
+            new AlertRequest(new BigDecimal(1300.00), 5)
+        );
+        userAlerts.add(new UserAlerts(10, alertsUser10));
+
+        var alertsUser11 = List.of(
+            new AlertRequest(new BigDecimal(13.00), 14),
+            new AlertRequest(new BigDecimal(12.90), 13)
+        );
+        userAlerts.add(new UserAlerts(11, alertsUser11));
+
+        var alertsUser12 = List.of(
+            new AlertRequest(new BigDecimal(39.90), 11),
+            new AlertRequest(new BigDecimal(49.90), 9)
+        );
+        userAlerts.add(new UserAlerts(12, alertsUser12));
 
         for (var userAlert : userAlerts) {
             setLoggedInUser(userAlert.userId());

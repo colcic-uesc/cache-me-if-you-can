@@ -13,7 +13,6 @@ import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.model.Seller;
 import com.cachemeifyoucan.econometro.domain.model.User;
 import com.cachemeifyoucan.econometro.domain.repository.AlertRepository;
-import com.cachemeifyoucan.econometro.domain.repository.OfferRepository;
 import com.cachemeifyoucan.econometro.domain.repository.ProductRepository;
 
 import jakarta.transaction.Transactional;
@@ -24,7 +23,6 @@ import lombok.AllArgsConstructor;
 public class AlertService {
     private final AlertRepository alertRepository;
     private final ProductRepository productRepository;
-    private final OfferRepository offerRepository;
     private final UserService userService;
 
     @Transactional
