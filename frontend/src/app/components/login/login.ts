@@ -2,10 +2,19 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../domain/services/user.service';
 import { User } from '../../domain/models/user';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule, ButtonModule,
+    InputTextModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    DividerModule],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
@@ -32,4 +41,8 @@ export class Login {
       }
     });
   }
+  register() {
+  console.log('Redirecionar para o cadastro...');
+}
+
 }

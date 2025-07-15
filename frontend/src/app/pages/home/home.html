@@ -1,5 +1,6 @@
-<app-carousel></app-carousel>
-<h1>Início</h1>
+<main class="layout-container">
+  <app-carousel></app-carousel>
+<img src="assets/image/banner-info.png"/>
 <ul>
   @for (product of products; track product.id ) {
   <li (click)="goToProduct(product.id)" class="product-container">
@@ -12,3 +13,4 @@
   </li>
   }
 </ul>
+</main>

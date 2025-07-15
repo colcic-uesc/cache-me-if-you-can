@@ -1,41 +1,187 @@
 @if(product) {
-<h1>{{product.title}}</h1>
-<p>{{product.description}}</p>
-<span>{{product.released}}</span>
+<div class="layout-container">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb-nav">
+    <p-breadcrumb [model]="breadcrumbItems" [home]="homeItem"></p-breadcrumb>
+  </nav>
 
-<!-- Menor preço entre as ofertas -->
+  <!-- Conteúdo Principal -->
+  <main class="produto-detalhes">
+    <!-- Seção do Produto -->
+    <section class="produto-principal">
+      <!-- Galeria de Imagens -->
+      <aside class="galeria-imagens">
+        @if(product.images) {
+        <figure class="imagem-principal">
+          <img
+            class="produto-imagem"
+            [src]="'data:image/png;base64,' + product.images[imagemAtiva]"
+            [alt]="product.title"
+          />
+        </figure>
 
-@if(product.images) {
-  <!-- TODO permitir ver todas as imagens -->
-   <img
-   class="product-image"
-   [src]="'data:image/png;base64,' + product.images[0]"
-   />
-  }
+        <!-- Miniaturas -->
+        <div class="miniaturas">
+          @for(image of product.images; track $index) {
+          <button
+            class="miniatura-btn"
+            [class.ativa]="$index === imagemAtiva"
+            type="button"
+            (click)="trocarImagem($index)"
+          >
+            <img
+              [src]="'data:image/png;base64,' + image"
+              [alt]="'Imagem ' + ($index + 1) + ' do ' + product.title"
+            />
+          </button>
+          }
+        </div>
+        }
+      </aside>
+
+      <!-- Informações do Produto -->
+      <section class="produto-info">
+        <header class="produto-header">
+          <h1 class="produto-titulo">{{product.title}}</h1>
+          <div class="avaliacao">
+            <p-rating [ngModel]="4.5" [readonly]="true" [stars]="5"></p-rating>
+            <span class="nota-avaliacao">4.5</span>
+          </div>
+        </header>
+
+        <!-- Preço Principal -->
+        <div class="preco-principal">
+          <div class="preco-info">
+            <span class="preco-valor"
+              >R$ {{menorPreco | number:'1.2-2':'pt'}}</span
+            >
+            <i class="pi pi-bell preco-alerta-icon"></i>
+          </div>
+          <p class="loja-menor-preco">Na loja {{menorLoja}}</p>
+        </div>
+
+        <!-- Marca Oficial -->
+        <div class="marca-oficial">
+          <span class="marca-label">Marca Oficial</span>
+          <p-chip
+            [label]="marcaOficial"
+            icon="pi pi-check-circle"
+            styleClass="marca-chip"
+          ></p-chip>
+        </div>
+
+        <!-- Botão Comparar -->
+        <p-button
+          label="Comparar Preços"
+          styleClass="p-button-success comparar-btn"
+          [style]="{'width': '100%'}"
+        ></p-button>
+      </section>
+    </section>
+
+    <!-- Seção de Ofertas -->
+    <section class="ofertas-section">
+      <h2 class="ofertas-titulo">Ofertas Disponíveis</h2>
+
+      <div class="ofertas-lista">
+        @for(offer of product.offers; track offer.sellerId) {
+        <article
+          class="oferta-card"
+          [class.menor-preco]="offer.price === menorPreco"
+        >
+          <div class="etiqueta-menor" *ngIf="offer.price === menorPreco">
+            Menor preço
+          </div>
+
+          <div class="produto-imagem-card">
+            <img
+              [src]="'data:image/png;base64,' + product.images[0]"
+              [alt]="product.title"
+            />
+          </div>
+
+          <!-- Preço -->
+          <div class="oferta-preco">
+            <span class="preco">R$ {{offer.price | number:'1.2-2':'pt'}}</span>
+            <span class="preco-label">à vista</span>
+          </div>
+
+          <!-- Loja -->
+          <div class="loja-info">
+            <!-- Imagem da Loja -->
+            <div class="loja-imagem">
+              <span class="loja-nome">{{offer.sellerName}}</span>
+              <img
+                [src]="'data:image/svg+xml;base64,' + offer.sellerImage"
+                [alt]="'Logo ' + offer.sellerName"
+              />
+            </div>
+            <div class="loja-status">
+              <i class="pi pi-circle-fill status-icon"></i>
+              <span class="status-text">18 dias</span>
+              <!-- Botão Ver Oferta -->
+              <p-button
+                label="Ver oferta"
+                styleClass="p-button-outlined ver-oferta-btn"
+                size="small"
+              ></p-button>
+            </div>
+          </div>
+        </article>
+        }
+      </div>
+    </section>
+
+    <!-- Histórico de Preços -->
+    <section class="historico-section">
+      <h2 class="historico-titulo">Histórico de Preços</h2>
+
+      <!-- Gráfico -->
+      <div class="grafico-container">
+        @if(chartData && chartData.labels.length > 1) {
+        <p-chart
+          type="line"
+          [data]="chartData"
+          [options]="chartOptions"
+          styleClass="historico-chart"
+        ></p-chart>
+        } @else {
+        <div class="sem-dados-grafico">
+          <p>Dados de histórico não disponíveis para este produto</p>
+        </div>
+        }
+      </div>
+
+      <!-- Filtros do Gráfico -->
+      <div class="filtros-grafico">
+        <p-button
+          label="30 dias"
+          styleClass="p-button-text filtro-btn ativo"
+          size="small"
+        ></p-button>
+        <p-button
+          label="3 meses"
+          styleClass="p-button-text filtro-btn"
+          size="small"
+        ></p-button>
+        <p-button
+          label="6 meses"
+          styleClass="p-button-text filtro-btn"
+          size="small"
+        ></p-button>
+        <p-button
+          label="1 ano"
+          styleClass="p-button-text filtro-btn"
+          size="small"
+        ></p-button>
+      </div>
+    </section>
+  </main>
+</div>
 } @else {
-  <!-- produto sem img -->
+<!-- Estado de carregamento -->
+<div class="loading-container">
+  <p-progressSpinner></p-progressSpinner>
+  <p>Carregando produto...</p>
+</div>
 }
-
-<!-- Botão Criar Alerta -->
-
-<!-- Gráfico de histórico do produto -->
-
-
-<!-- Lista de ofertas -->
-<ul>
-  @for(offer of product.offers; track offer.sellerId) {
-    <li>
-      {{offer.sellerName}}
-      <img [src]="'data:image/svg+xml;base64,' + offer.sellerImage"/>
-      {{offer.price}}
-    </li>
-  }
-</ul>
-<ul>
-  @for(history of product.history; track history.date) {
-    <li>
-      {{history.price | number:'1.2-2' : 'pt'}}
-      {{history.date | date}}
-    </li>
-  }
-</ul>

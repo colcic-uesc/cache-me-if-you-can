@@ -1,6 +1,224 @@
-#login-wrapper {
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  background-color: var(--cor-branco);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px var(--cor-preto);
+  font-family: var(--fonte-textos);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+
+  &__close-btn {
+    position: absolute !important;
+    top: 1rem;
+    right: 1rem;
+
+    ::ng-deep .p-button {
+      color: var(--cor-desfoque);
+
+      &:hover {
+        background-color: var(--cor-de-cartao);
+        color: var(--cor-preto);
+      }
+    }
+  }
+
+  &__header {
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  &__logo {
+    margin: 0.5rem 1rem;
+  }
+
+  &__title {
+    font-size: 1.8rem;
+    margin: 0;
+    color: var(--cor-preto);
+    font-weight: 600;
+    font-family: var(--fonte-titulos);
+  }
+
+  &__description {
+    font-size: 0.9rem;
+    color: var(--cor-preto);
+    margin-top: 0.5rem;
+    line-height: 1.4;
+    font-family: var(--fonte-textos);
+  }
+
+  // Formulário
+  &__form {
     display: flex;
     flex-direction: column;
-    background-color: aquamarine;
-    border: 1px solid black;
+  }
+
+  &__fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  &__legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  &__input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__label {
+    font-size: 0.9rem;
+    color: var(--cor-preto);
+    font-weight: 500;
+    font-family: var(--fonte-textos);
+  }
+
+  // componentes PrimeNG
+  ::ng-deep {
+    .p-inputgroup {
+      .p-inputtext {
+        font-size: 0.9rem;
+        border-color: var(--cor-de-borda);
+        background-color: transparent;
+        color: var(--cor-preto);
+
+        &:focus {
+          border-color: var(--cor-secundaria);
+        }
+
+        &::placeholder {
+          color: var(--cor-desfoque);
+        }
+      }
+
+      .p-inputgroup-addon {
+        background-color: var(--cor-de-cartao);
+        border-color: var(--cor-de-borda);
+        color: var(--cor-desfoque);
+
+      }
+      .p-inputgroupaddon{
+        background-color: transparent;
+      }
+    }
+
+    .login-container__submit-btn .p-button {
+      width: 100%;
+      background-color: var(--cor-de-terciaria);
+      border-color: var(--cor-de-terciaria);
+      font-family: var(--fonte-textos);
+      font-weight: 500;
+      margin-top: 0.5rem;
+      color: var(--cor-branco);
+
+      &:hover:not(:disabled) {
+        background-image: var(--cor-gradiente);
+        border-color: var(--cor-branco);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+      }
+    }
+
+    p-button.login-container__register-btn{
+      width: -webkit-fill-available;
+    }
+    .login-container__register-btn .p-button {
+      width: 100%;
+      color: var(--cor-preto);
+      border-color: var(--cor-de-terciaria);
+
+      &:hover {
+        background-image: var(--cor-gradiente);
+        border-color: var(--cor-secundaria);
+        color: var(--cor-branco);
+      }
+    }
+
+    .p-divider {
+      margin: 0;
+
+      .p-divider-content {
+        background-color: var(--cor-branco);
+        padding: 0 1rem;
+      }
+
+      &::before {
+        border-top-color: var(--cor-de-borda);
+      }
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__forgot-link {
+    color: var(--cor-preto);
+    text-decoration: underline;
+    font-size: 0.9rem;
+    font-family: var(--fonte-textos);
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--cor-de-terciaria);
+    }
+  }
+
+  &__divider-text {
+    font-size: 0.9rem;
+    color: var(--cor-desfoque);
+    font-family: var(--fonte-textos);
+  }
 }
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem;
+    gap: 1rem;
+    margin: 1rem;
+
+    &__title {
+      font-size: 1.6rem;
+    }
+
+    &__description {
+      font-size: 0.85rem;
+    }
+
+    &__fieldset {
+      gap: 1rem;
+    }
+
+    ::ng-deep {
+      .login-container__submit-btn .p-button,
+      .login-container__register-btn .p-button {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+

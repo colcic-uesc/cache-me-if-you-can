@@ -1,10 +1,107 @@
 :host {
-    background-color: #D9D9D9;
+  app-login {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+}
+.navbar {
+  background-color: var(--cor-preto);
+  color: var(--cor-branco);
+  padding: 0.5rem 1rem;
 
-    app-login {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
+  .navbar-top {
+    display: flex;
+    align-items: center;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    .logo img {
+      height: 40px;
     }
+
+    .search-bar {
+      flex: 1;
+      margin: 0 1rem;
+      text-align: -webkit-center;
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .btn-login,
+      .btn-alerts {
+        background-color: var(--cor-preto);
+        border: none;
+        color: var(--cor-branco);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+          font-size: 1.2rem;
+        }
+      }
+
+      .user-name {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-right: 1rem;
+        font-family: var(--fonte-textos);
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        background-color: var(--cor-de-cartao);
+
+        &__initial {
+          background-color: var(--cor-branco);
+          color: var(--cor-preto);
+          font-weight: bold;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.9rem;
+
+          transform: translateX(-10px);
+        }
+
+        &__label {
+          color: var(--cor-preto);
+          font-size: 0.9rem;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+
+  .category-menu {
+    background-color: var(--cor-preto);
+    padding: 3rem 3rem 0.5rem;
+
+    a {
+      color: var(--cor-branco);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    ul.nav-bar-itens {
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
 }

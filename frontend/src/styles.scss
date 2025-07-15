@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap");
 html, body {
   height: 100%;
   margin: 0;
@@ -13,4 +14,67 @@ app-root {
 
 .main-content {
   flex: 1;
+}
+
+:root {
+  /* padrao */
+  --cor-principal: #F9ED0E;
+  --cor-secundaria: #3FBF52;
+  --cor-de-terciaria: #012326;
+  --cor-preto: #000000;
+  --cor-branco: #ffffff;
+
+
+  /* fundo */
+  --cor-gradiente: linear-gradient(97.54deg, #164128 0%, #112230 100%);
+  --cor-de-cartao: #d9d9d9;
+  --cor-botao-hover: #8f9096;
+
+  /* texto */
+  --cor-secundaria-texto: #ffd870;
+  --cor-sombra: #515252;
+  --cor-hover-nav: #CB8242;
+  --cor-desfoque: #696a6b;
+
+  /* bordas */
+  --cor-de-borda: #cfcfcf;
+
+  /* fontes */
+  --fonte-titulos: "Montserrat", sans-serif;
+  --fonte-textos: "Poppins", sans-serif;
+}
+
+body {
+  background-color: var(--cor-de-fundo);
+  font-family: var(--fonte-textos);
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  color: var(--cor-preto);
+}
+/* ===== BASE DE LAYOUT BASEADO NO DESIGN DO ===== */
+.layout-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 12px;
+  padding-right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: #f0f0f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.fade-transition {
+  opacity: 0;
+  pointer-events: none;
 }

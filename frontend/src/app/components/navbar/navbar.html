@@ -1,10 +1,40 @@
-<p>Econômetro</p>
-<app-search-bar></app-search-bar>
-@if (user) {
-    {{user.name}}
-} @else {
-    <button (click)="showLogin = true">Entrar</button>
-}
-@if (showLogin) {
-<app-login (close)="showLogin = false"></app-login>
-}
+<header class="navbar">
+  <section class="navbar-top">
+    <figure class="logo">
+      <img src="assets/logos/logo.svg" alt="Econômetro" />
+    </figure>
+
+    <section class="search-bar">
+      <app-search-bar></app-search-bar>
+    </section>
+
+    <aside class="user-actions">
+      @if (user) {
+        <span class="user-name">
+          <span class="user-name__initial">{{ userInitial }}</span>
+         <span class="user-name__label">{{ user.name }}</span>
+        </span>
+      } @else {
+        <button class="btn-login" (click)="showLogin = true">
+          <i class="pi pi-user"></i> Entrar
+        </button>
+      }
+
+      <button class="btn-alerts">
+        <i class="pi pi-bell"></i> Alertas
+      </button>
+    </aside>
+  </section>
+
+  <nav class="category-menu" aria-label="Categorias principais">
+    <ul class="nav-bar-itens">
+      @for (categoria of categorias; track categoria) {
+        <li><a href="#">{{ categoria }}</a></li>
+      }
+    </ul>
+  </nav>
+
+  @if (showLogin) {
+    <app-login (close)="showLogin = false"></app-login>
+  }
+</header>
