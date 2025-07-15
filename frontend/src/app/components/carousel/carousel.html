@@ -1,1 +1,15 @@
-<p>carousel works!</p>
+<div class="card">
+  <p-carousel
+    class="banner-carousel"
+    [value]="banners"
+    [numVisible]="1"
+    [numScroll]="1"
+    [circular]="true"
+    [responsiveOptions]="responsiveOptions"
+    autoplayInterval="3000"
+  >
+    <ng-template let-banner #item>
+      <img class="banner" [src]="'assets/image/'+ banner" />
+    </ng-template>
+  </p-carousel>
+</div>

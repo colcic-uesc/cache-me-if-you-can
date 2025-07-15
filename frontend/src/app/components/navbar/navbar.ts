@@ -8,17 +8,28 @@ import { User } from '../../domain/models/user';
   selector: 'app-navbar',
   imports: [SearchBar, Login],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.scss'
+  styleUrl: './navbar.scss',
 })
+
 export class Navbar implements OnInit {
   showLogin = false;
   user?: User;
-  constructor(private userService: UserService) {
-
-  }
+  userInitial: string = '';
+  constructor(private userService: UserService) {}
+  categorias = [
+    'Automoveis',
+    'Eletrodomésticos',
+    'Eletrônicos',
+    'Medicamentos',
+    'Perfumaria',
+    'Vestuarios',
+  ];
   ngOnInit(): void {
-    this.userService.getUser().subscribe(user => {
+    this.userService.getUser().subscribe((user) => {
       this.user = user;
-    })
+      if (user?.name) {
+        this.userInitial = user.name.charAt(0).toUpperCase();
+      }
+    });
   }
 }

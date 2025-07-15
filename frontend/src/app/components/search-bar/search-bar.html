@@ -1,2 +1,11 @@
-<input type="text" (keydown.enter)="search()" [(ngModel)]="query" />
-<button (click)="search()">Pesquisar</button>
+<div class="search-container">
+  <input
+    type="text"
+    [(ngModel)]="query"
+    (keydown.enter)="search()"
+    placeholder="Digite sua busca..."
+  />
+  <button class="search-button" (click)="search()" aria-label="Pesquisar">
+    <i class="pi pi-search"></i>
+  </button>
+</div>

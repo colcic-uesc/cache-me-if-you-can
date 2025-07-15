@@ -25,6 +25,7 @@ import com.cachemeifyoucan.econometro.application.dto.CreateProductRequest;
 import com.cachemeifyoucan.econometro.application.dto.CreateUserRequest;
 import com.cachemeifyoucan.econometro.application.dto.SellerRequest;
 import com.cachemeifyoucan.econometro.domain.enums.UserRole;
+import com.cachemeifyoucan.econometro.domain.model.Offer;
 import com.cachemeifyoucan.econometro.domain.model.PriceHistory;
 import com.cachemeifyoucan.econometro.domain.model.Product;
 import com.cachemeifyoucan.econometro.domain.model.User;
@@ -162,13 +163,15 @@ public class DatabaseInitializer implements CommandLineRunner {
                         findAndConvertImages(List.of("galaxyS24.png", "galaxyS24-2.jpg"))),
                 new CreateProductRequest("iPhone 15",
                         "Apple iPhone 15 com processador A17 Bionic e câmera avançada",
-                        LocalDate.now(), 2, 3, findAndConvertImages(List.of("iphone15.png", "iphone15-2.png", "iphone15-3.png"))),
+                        LocalDate.now(), 2, 3,
+                        findAndConvertImages(List.of("iphone15.png", "iphone15-2.png", "iphone15-3.png"))),
                 new CreateProductRequest("Pixel 8",
                         "Google Pixel 8 com Android puro e câmera de alta resolução",
                         LocalDate.now(), 3, 3, findAndConvertImages(List.of("pixel8.png", "pixel8-2.png"))),
                 new CreateProductRequest("Moto G15",
                         "Motorola Moto G15 com bateria de longa duração e tela grande",
-                        LocalDate.now(), 4, 3, findAndConvertImages(List.of("motog15.png", "motog15-2.png", "motog15-3.png"))),
+                        LocalDate.now(), 4, 3,
+                        findAndConvertImages(List.of("motog15.png", "motog15-2.png", "motog15-3.png"))),
                 new CreateProductRequest("Redmi 13",
                         "Xiaomi Redmi 13 com ótimo custo-benefício e desempenho eficiente",
                         LocalDate.now(), 5, 3, findAndConvertImages(List.of("redmi13.png", "redmi13-2.png"))),
@@ -186,17 +189,22 @@ public class DatabaseInitializer implements CommandLineRunner {
                 new CreateProductRequest("Capa Protetora",
                         "Capa protetora resistente para smartphones de diversas marcas",
                         LocalDate.now(),
-                        1, 5, findAndConvertImages(List.of("capaProtetora.png", "capaProtetora-2.png", "capaProtetora-3.png"))),
+                        1, 5,
+                        findAndConvertImages(
+                                List.of("capaProtetora.png", "capaProtetora-2.png", "capaProtetora-3.png"))),
                 new CreateProductRequest("Fone de Ouvido Bluetooth",
                         "Fone de ouvido Bluetooth com cancelamento de ruído e bateria duradoura",
                         LocalDate.now(), 4, 5, findAndConvertImages(List.of("fone.png", "fone-2.png"))),
 
                 new CreateProductRequest("Camiseta Básica",
                         "Camiseta básica de algodão confortável e disponível em várias cores",
-                        LocalDate.now(), 7, 6, findAndConvertImages(List.of("camisa-branca.png", "camisa-branca-2.png", "camisa-laranja.png", "camisa-azul.png"))),
+                        LocalDate.now(), 7, 6,
+                        findAndConvertImages(List.of("camisa-branca.png", "camisa-branca-2.png", "camisa-laranja.png",
+                                "camisa-azul.png"))),
                 new CreateProductRequest("Calça Jeans",
                         "Calça jeans feminina de alta qualidade e modelagem moderna",
-                        LocalDate.now(), 6, 6, findAndConvertImages(List.of("jeans-1.png", "jeans.png", "jeans-2.png"))),
+                        LocalDate.now(), 6, 6,
+                        findAndConvertImages(List.of("jeans-1.png", "jeans.png", "jeans-2.png"))),
 
                 new CreateProductRequest("Dipirona",
                         "Dipirona sódica 500mg, medicamento para dor e febre",
@@ -309,21 +317,24 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         for (Product product : products) {
             // gera histórico para os últimos 60 dias
-            for (int i = 59; i >= 0; i--) {
-                LocalDate date = LocalDate.now().minusDays(i);
-                BigDecimal bestPrice = Objects.requireNonNullElse(product.getBestPrice(), new BigDecimal(1500));
-                // Gera um fator aleatório entre -0.6 e +0.6
-                double randomFactor = (Math.random() * 1.2) - 0.6;
-                BigDecimal variation = bestPrice.multiply(BigDecimal.valueOf(randomFactor));
-                BigDecimal price = bestPrice.add(variation).max(BigDecimal.valueOf(1.0));
-                historyRepository.save(new PriceHistory(product, price, date));
-            }
+            Optional<Offer> bestOffer = offerRepository.findFirstByProductIdAndEnabledOrderByPriceAsc(product.getId(), true);
+            bestOffer.ifPresent(offer -> {
+                for (int i = 59; i >= 0; i--) {
+                    // Gera um fator aleatório entre -0.6 e +0.6
+                    double randomFactor = (Math.random() * 1.2) - 0.6;
+                    BigDecimal variation = offer.getPrice().multiply(BigDecimal.valueOf(randomFactor));
+                    BigDecimal price = offer.getPrice().add(variation).max(BigDecimal.valueOf(1.0));
+                    LocalDate date = LocalDate.now().minusDays(i);
+                    historyRepository.save(new PriceHistory(product, price, date));
+                }
+            });
         }
     }
 
     private record UserAlerts(long userId, List<AlertRequest> alerts) {
     }
-    private void createAlerts(){
+
+    private void createAlerts() {
         if (alertRepository.count() > 0) {
             return;
         }
@@ -332,39 +343,33 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         var alerts = List.of(
                 new AlertRequest(new BigDecimal(3499.90), 1),
-                new AlertRequest(new BigDecimal(7099.90), 2)
-                );
+                new AlertRequest(new BigDecimal(7099.90), 2));
 
         userAlerts.add(new UserAlerts(2, alerts));
-        
+
         var alertsUser8 = List.of(
-            new AlertRequest(new BigDecimal(40.00), 11),
-            new AlertRequest(new BigDecimal(14.00), 13)
-        );
+                new AlertRequest(new BigDecimal(40.00), 11),
+                new AlertRequest(new BigDecimal(14.00), 13));
         userAlerts.add(new UserAlerts(8, alertsUser8));
 
         var alertsUser9 = List.of(
-            new AlertRequest(new BigDecimal(100.00), 12),
-            new AlertRequest(new BigDecimal(200.00), 10)
-        );
+                new AlertRequest(new BigDecimal(100.00), 12),
+                new AlertRequest(new BigDecimal(200.00), 10));
         userAlerts.add(new UserAlerts(9, alertsUser9));
 
         var alertsUser10 = List.of(
-            new AlertRequest(new BigDecimal(48.00), 9),
-            new AlertRequest(new BigDecimal(1300.00), 5)
-        );
+                new AlertRequest(new BigDecimal(48.00), 9),
+                new AlertRequest(new BigDecimal(1300.00), 5));
         userAlerts.add(new UserAlerts(10, alertsUser10));
 
         var alertsUser11 = List.of(
-            new AlertRequest(new BigDecimal(13.00), 14),
-            new AlertRequest(new BigDecimal(12.90), 13)
-        );
+                new AlertRequest(new BigDecimal(13.00), 14),
+                new AlertRequest(new BigDecimal(12.90), 13));
         userAlerts.add(new UserAlerts(11, alertsUser11));
 
         var alertsUser12 = List.of(
-            new AlertRequest(new BigDecimal(39.90), 11),
-            new AlertRequest(new BigDecimal(49.90), 9)
-        );
+                new AlertRequest(new BigDecimal(39.90), 11),
+                new AlertRequest(new BigDecimal(49.90), 9));
         userAlerts.add(new UserAlerts(12, alertsUser12));
 
         for (var userAlert : userAlerts) {
