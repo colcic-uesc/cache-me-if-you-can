@@ -10,31 +10,33 @@
 
     <aside class="user-actions">
       @if (user) {
-        <span class="user-name">
-          <span class="user-name__initial">{{ userInitial }}</span>
-         <span class="user-name__label">{{ user.name }}</span>
-        </span>
+      <span class="user-name">
+        <span class="user-name__initial">{{ userInitial }}</span>
+        <span class="user-name__label">{{ user.name }}</span>
+      </span>
       } @else {
-        <button class="btn-login" (click)="showLogin = true">
-          <i class="pi pi-user"></i> Entrar
-        </button>
+      <button class="btn-login" (click)="showLogin = true">
+        <i class="pi pi-user"></i> Entrar
+      </button>
       }
 
-      <button class="btn-alerts">
-        <i class="pi pi-bell"></i> Alertas
-      </button>
+      <button class="btn-alerts"><i class="pi pi-bell"></i> Alertas</button>
     </aside>
   </section>
 
   <nav class="category-menu" aria-label="Categorias principais">
     <ul class="nav-bar-itens">
-      @for (categoria of categorias; track categoria) {
-        <li><a href="#">{{ categoria }}</a></li>
+      @for (category of categories; track category.id) {
+      <li>
+        <a [routerLink]="['/search']" [queryParams]="{ categoryId: category.id }"
+          >{{ category.name }}</a
+        >
+      </li>
       }
     </ul>
   </nav>
 
   @if (showLogin) {
-    <app-login (close)="showLogin = false"></app-login>
+  <app-login (close)="showLogin = false"></app-login>
   }
 </header>

@@ -6,9 +6,9 @@ public record ProductResponse(
     long id,
     String title,
     String imageContent,
+    int offers,
     BigDecimal bestPrice,
     String sellerName
-
 ) {
 
 }

@@ -3,33 +3,34 @@ import { UserService } from '../../domain/services/user.service';
 import { Login } from '../login/login';
 import { SearchBar } from '../search-bar/search-bar';
 import { User } from '../../domain/models/user';
+import { RouterModule } from '@angular/router';
+import { CategoryResponse } from '../../domain/models/category';
+import { CategoryService } from '../../domain/services/category.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [SearchBar, Login],
+  imports: [SearchBar, Login, RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })
-
 export class Navbar implements OnInit {
   showLogin = false;
   user?: User;
   userInitial: string = '';
-  constructor(private userService: UserService) {}
-  categorias = [
-    'Automoveis',
-    'Eletrodomésticos',
-    'Eletrônicos',
-    'Medicamentos',
-    'Perfumaria',
-    'Vestuarios',
-  ];
+  constructor(
+    private userService: UserService,
+    private categoryService: CategoryService
+  ) {}
+  categories: CategoryResponse[] = [];
   ngOnInit(): void {
     this.userService.getUser().subscribe((user) => {
       this.user = user;
       if (user?.name) {
         this.userInitial = user.name.charAt(0).toUpperCase();
       }
+    });
+    this.categoryService.getAll().subscribe((categories) => {
+      this.categories = categories.filter((category)=> !category.parentId);
     });
   }
 }

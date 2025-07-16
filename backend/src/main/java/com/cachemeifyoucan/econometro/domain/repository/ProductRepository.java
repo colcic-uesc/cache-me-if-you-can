@@ -1,6 +1,7 @@
 package com.cachemeifyoucan.econometro.domain.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,10 +28,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                 + "or p.category.name ilike concat('%', :query, '%')"
                 + "or p.brand.name ilike concat('%', :query, '%')"
             +") "
-            + "AND (:categoryId = 0 OR p.category.id = :categoryId) "
+            + "AND (:categoryIds IS NULL OR p.category.id IN (:categoryIds)) "
             + "AND (:brandId = 0 OR p.brand.id = :brandId)"
             + "AND p.enabled = :enabled")
-    List<Product> search(String query, long categoryId, long brandId, boolean enabled);
+    List<Product> search(String query, Set<Long> categoryIds, long brandId, boolean enabled);
 
     List<Product> findByEnabled(boolean enabled);
 

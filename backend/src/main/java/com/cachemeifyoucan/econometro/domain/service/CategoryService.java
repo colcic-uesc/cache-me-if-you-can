@@ -1,6 +1,8 @@
 package com.cachemeifyoucan.econometro.domain.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -72,5 +74,15 @@ public class CategoryService {
         Category category = getCategoryById(id);
         category.setSystem(true);
         categoryRepository.save(category);
+    }
+
+    public Set<Long> findRelatedCategoryIds(long parentId) {
+        if (parentId == 0) {
+            return null;
+        }
+        Set<Long> relatedIds = new HashSet<>();
+        relatedIds.add(parentId);
+        relatedIds.addAll(categoryRepository.findAllChildren(parentId));
+        return relatedIds;
     }
 }

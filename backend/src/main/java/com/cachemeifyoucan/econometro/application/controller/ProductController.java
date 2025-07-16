@@ -66,6 +66,7 @@ public class ProductController {
                             product.getId(),
                             product.getTitle(),
                             image,
+                            product.getActiveOfferCount(),
                             product.getBestPrice(),
                             seller);
                 })

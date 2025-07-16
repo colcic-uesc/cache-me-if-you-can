@@ -1,6 +1,7 @@
 package com.cachemeifyoucan.econometro.domain.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -62,7 +63,9 @@ public class ProductService {
 
     public List<Product> searchProducts(String query, long categoryId, long brandId) {
         String textQuery = query == null || query.isEmpty() ? null : query;
-        return productRepository.search(textQuery, categoryId, brandId, true);
+        
+        Set<Long> categoryIdsToSearch = categoryService.findRelatedCategoryIds(categoryId);
+        return productRepository.search(textQuery, categoryIdsToSearch, brandId, true);
     }
 
     public Product updateProduct(long id, UpdateProductRequest dto) {
