@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../domain/services/product.service';
-import { Product } from '../../domain/models/product';
+import { ProductResponse } from '../../domain/models/product';
 import { ProductDetailedResponse } from '../../domain/dto/product-detailed-response';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

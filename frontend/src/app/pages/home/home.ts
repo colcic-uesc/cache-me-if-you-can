@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Carousel } from '../../components/carousel/carousel';
-import { Product } from '../../domain/models/product';
+import { ProductResponse } from '../../domain/models/product';
 import { ProductService } from '../../domain/services/product.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { ProductService } from '../../domain/services/product.service';
   styleUrl: './home.scss',
 })
 export class Home implements OnInit {
-  products: Product[] = [];
+  products: ProductResponse[] = [];
 
   constructor(private productService: ProductService, private router: Router) {}
   ngOnInit(): void {

@@ -4,10 +4,10 @@
 <ul>
   @for (product of products; track product.id ) {
   <li (click)="goToProduct(product.id)" class="product-container">
-    @if(product.images && product.images[0]) {
+    @if(product.imageContent) {
     <img
       class="product-image"
-      [src]="'data:image/png;base64,' + product.images[0].content"
+      [src]="'data:image/png;base64,' + product.imageContent"
     />
     } {{product.title}}
   </li>

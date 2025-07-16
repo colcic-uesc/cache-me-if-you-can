@@ -85,13 +85,20 @@ public class Product {
     }
 
     public Offer getBestOffer() {
-        if (offers == null) {
-            return null;
-        }
-        return offers.stream()
+        return getOffers().stream()
                 .filter(Offer::isEnabled)
                 .min((offer, other) -> offer.getPrice().compareTo(other.getPrice()) )
                 .orElse(null);
     }
 
+    public int getActiveOfferCount() {
+        return getOffers().size();
+    }
+
+    public List<Offer> getOffers() {
+        if (offers == null) {
+            return List.of();
+        }
+        return offers;
+    }
 }

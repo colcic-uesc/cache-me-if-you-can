@@ -1,10 +1,13 @@
 package com.cachemeifyoucan.econometro.application.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cachemeifyoucan.econometro.application.dto.CategoryRequest;
+import com.cachemeifyoucan.econometro.application.dto.CategoryResponse;
 import com.cachemeifyoucan.econometro.domain.model.Category;
 import com.cachemeifyoucan.econometro.domain.service.CategoryService;
 
@@ -38,15 +42,21 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Category by ID", description = "Retrieves a category by its ID")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getById(long id) {
-        return ResponseEntity.ok(categoryService.getCategoryById(id));
+    public ResponseEntity<?> getById(@PathVariable long id) {
+        Category category = categoryService.getCategoryById(id);
+        CategoryResponse dto = new CategoryResponse(category.getId(), category.getName(),
+                        category.getParent() == null ? 0 : category.getParent().getId());
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
     @Operation(summary = "Get All Categories", description = "Retrieves all categories")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
+        List<CategoryResponse> dto = categoryService.getAllCategories().stream()
+                .map(category -> new CategoryResponse(category.getId(), category.getName(),
+                        category.getParent() == null ? 0 : category.getParent().getId()))
+                .toList();
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/{id}")

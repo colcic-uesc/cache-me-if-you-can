@@ -1,8 +1,76 @@
-<h1>Você buscou {{query}}</h1>
-<ul>
-    @for (product of products; track product.id ) {
-    <li>
-        {{product.title}}
-    </li>
+<!-- Container Principal -->
+<div class="search-container">
+  <!-- Cabeçalho da Busca -->
+  <header class="search-header">
+    <div class="search-info">
+      <h1 class="search-title">Você buscou</h1>
+      <span class="search-query">{{query || category?.name }}</span>
+    </div>
+
+    <!-- Ordenação Simplificada -->
+    <div class="search-controls">
+      <label class="sort-label">Ordenar por</label>
+      <select
+        [(ngModel)]="selectedSort"
+        (change)="onSortChange(selectedSort)"
+        class="sort-select"
+      >
+        @for(option of sortOptions; track option.value) {
+          <option [value]="option.value">{{option.label}}</option>
+        }
+      </select>
+    </div>
+  </header>
+
+  <!-- Grid de Produtos -->
+  <main class="products-grid">
+    @if(products && products.length > 0) {
+      @for(product of products; track product.id) {
+        <article class="product-card" (click)="navigateToProduct(product.id)">
+
+          <!-- Imagem do Produto -->
+          <figure class="product-image">
+            <img
+              [src]="'data:image/png;base64,' + product.imageContent"
+              [alt]="product.title"
+              loading="lazy"
+            />
+          </figure>
+
+          <!-- Informações do Produto -->
+          <div class="product-info">
+            <h3 class="product-title">{{product.title}}</h3>
+
+            <!-- Menor Preço -->
+            <div class="product-pricing">
+              <span class="current-price">R$ {{product.bestPrice| number:'1.2-2':'pt'}}</span>
+            </div>
+
+            <!-- Loja com Menor Preço -->
+            <div class="best-offer">
+              <span class="offer-label">Menor preço via {{product.sellerName}}</span>
+              <div class="offer-status">
+                <i class="pi pi-circle-fill status-icon"></i>
+                <span class="status-text">Comparar preço • {{ product.offers }} lojas</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      }
+    } @else if(isLoading) {
+      <!-- Estado de Carregamento -->
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Buscando produtos...</p>
+      </div>
+    } @else {
+      <!-- Estado Vazio -->
+      <div class="empty-state">
+        <i class="pi pi-search empty-icon"></i>
+        <h2>Nenhum produto encontrado</h2>
+        <p>Tente buscar com outras palavras-chave</p>
+      </div>
     }
-</ul>
+  </main>
+</div>
+

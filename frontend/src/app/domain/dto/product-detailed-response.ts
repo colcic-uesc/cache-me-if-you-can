@@ -1,13 +1,13 @@
 import { ProductDetail } from './../../pages/product-detail/product-detail';
 import { Brand } from "../models/brand";
-import { Category } from "../models/category";
+import { CategoryResponse } from "../models/category";
 
 export interface ProductDetailedResponse {
   title: string;
   description: string;
   released: Date;
   brand: Brand;
-  category: Category;
+  category: CategoryResponse;
   bestPrice: number;
   images: string[];
   offers: ProductDetailedOfferResponse[];
