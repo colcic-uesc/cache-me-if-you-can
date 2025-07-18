@@ -57,7 +57,7 @@ public class ProductService {
                 .map(history -> new ProductDetailedResponse.History(history.getCreationDate(), history.getPrice()))
                 .toList();
 
-        return new ProductDetailedResponse(product.getTitle(), product.getDescription(), product.getReleased(),
+        return new ProductDetailedResponse(product.getId(), product.getTitle(), product.getDescription(), product.getReleased(),
                 product.getBrand(), product.getCategory(), product.getBestPrice(), images, offers, priceHistory);
     }
 

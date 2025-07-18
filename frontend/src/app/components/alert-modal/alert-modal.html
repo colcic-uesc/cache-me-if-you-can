@@ -1,0 +1,52 @@
+<p-dialog
+  header="Quer pagar mais barato?"
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="alert-edit-modal"
+  [style]="{width: '400px'}"
+  (onHide)="onCancel()">
+
+  <div class="modal-content">
+    <p class="modal-description">
+      Vamos te avisar assim que o produto chegar ao preço que você escolheu
+    </p>
+
+    <div class="price-input-container">
+      <button
+        type="button"
+        class="price-decrease-btn"
+        (click)="decreasePrice()"
+        [disabled]="desiredPrice <= 1">
+        <i class="pi pi-minus"></i>
+      </button>
+
+      <input
+        type="text"
+        class="price-input"
+        [value]="formatPrice(desiredPrice)"
+        (input)="onPriceInput($event)"
+        (blur)="validatePrice()"
+        readonly>
+
+      <button
+        type="button"
+        class="price-increase-btn"
+        (click)="increasePrice()">
+        <i class="pi pi-plus"></i>
+      </button>
+    </div>
+
+    <div class="modal-actions">
+      <button
+        type="button"
+        class="edit-alert-btn"
+        (click)="onSave()">
+        {{isEditing ? 'Editar Alerta' : 'Criar Alerta'}}
+      </button>
+    </div>
+  </div>
+</p-dialog>
+

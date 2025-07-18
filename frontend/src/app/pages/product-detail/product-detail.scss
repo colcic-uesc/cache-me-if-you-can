@@ -143,11 +143,47 @@
   gap: 1rem;
   margin: 1rem 0;
 
+  .preco-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
   .preco-valor {
     font-family: var(--fonte-titulos);
     font-size: 2.25rem;
     font-weight: 700;
     color: var(--cor-preto);
+  }
+
+  .preco-alerta-icon {
+    font-size: 1.5rem;
+    color: var(--cor-desfoque);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
+
+    &:hover {
+      color: var(--cor-secundaria);
+      background-color: rgba(63, 191, 82, 0.1);
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+      background-color: #2ecc71;
+    }
+  }
+  .preco-alerta-ativo {
+    color: var(--cor-secundaria);
+    background-color: rgba(63, 191, 82, 0.1);
+  }
+
+  .loja-menor-preco {
+    font-size: 0.875rem;
+    color: var(--cor-desfoque);
+    margin: 0.25rem 0 0 0;
   }
 
   ::ng-deep .preco-chip {
@@ -279,7 +315,6 @@
   height: auto;
   border-radius: 4px;
 }
-
 
 .oferta-preco {
   display: flex;
@@ -487,4 +522,3 @@
     }
   }
 }
-

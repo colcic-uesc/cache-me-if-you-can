@@ -1,0 +1,135 @@
+::ng-deep .alert-edit-modal {
+  .p-dialog-header {
+    background: var(--cor-branco);
+    border-bottom: 1px solid var(--cor-de-borda);
+    padding: 1.5rem;
+
+    .p-dialog-title {
+      font-family: var(--fonte-titulos);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--cor-preto);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::before {
+        content: '🔔';
+        font-size: 1.5rem;
+      }
+    }
+
+    .p-dialog-header-icon {
+      color: var(--cor-desfoque);
+
+      &:hover {
+        color: var(--cor-preto);
+      }
+    }
+  }
+
+  .p-dialog-content {
+    padding: 0;
+    background: var(--cor-branco);
+  }
+}
+
+.modal-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal-description {
+  color: var(--cor-desfoque);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+}
+
+.price-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.price-decrease-btn,
+.price-increase-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--cor-de-borda);
+  background: var(--cor-branco);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--cor-secundaria);
+    background: rgba(63, 191, 82, 0.05);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  i {
+    font-size: 0.875rem;
+    color: var(--cor-preto);
+  }
+}
+
+.price-input {
+  flex: 1;
+  max-width: 200px;
+  height: 50px;
+  border: 2px solid var(--cor-de-borda);
+  border-radius: 8px;
+  padding: 0 1rem;
+  font-family: var(--fonte-titulos);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--cor-preto);
+  background: var(--cor-branco);
+
+  &:focus {
+    outline: none;
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(63, 191, 82, 0.1);
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.edit-alert-btn {
+  background: var(--cor-de-terciaria);
+  color: var(--cor-branco);
+  border: none;
+  border-radius: 8px;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #014a4f;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(1, 35, 38, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+

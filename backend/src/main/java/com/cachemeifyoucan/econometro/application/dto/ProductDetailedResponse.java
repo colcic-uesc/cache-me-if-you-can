@@ -10,6 +10,7 @@ import com.cachemeifyoucan.econometro.domain.model.Category;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public record ProductDetailedResponse(
+    long id,
     String title,
     String description,
     LocalDate released,

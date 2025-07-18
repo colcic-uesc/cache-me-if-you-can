@@ -55,7 +55,7 @@
             <span class="preco-valor"
               >R$ {{menorPreco | number:'1.2-2':'pt'}}</span
             >
-            <i class="pi pi-bell preco-alerta-icon"></i>
+            <i class="pi pi-bell preco-alerta-icon" (click)="createAlert()" [class.preco-alerta-ativo]="alertaAtivado"></i>
           </div>
           <p class="loja-menor-preco">Na loja {{menorLoja}}</p>
         </div>

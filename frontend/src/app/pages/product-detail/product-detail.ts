@@ -13,7 +13,10 @@ import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { MenuItem } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { MenuItem, MessageService } from 'primeng/api';
+import { AlertService } from '../../domain/services/alert.service';
+import { AlertRequest } from '../../domain/dto/alert-request';
 
 @Component({
   selector: 'app-product-detail',
@@ -26,12 +29,13 @@ import { MenuItem } from 'primeng/api';
     ButtonModule,
     ChartModule,
     ProgressSpinnerModule,
+    ToastModule,
   ],
+  providers: [MessageService],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
 })
 export class ProductDetail implements OnInit {
-  id = 0;
   product!: ProductDetailedResponse;
 
   // Propriedades para o breadcrumb
@@ -48,9 +52,14 @@ export class ProductDetail implements OnInit {
   chartData: any;
   chartOptions: any;
 
+  // Estado do alerta
+  isCreatingAlert = false;
+
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private alertService: AlertService,
+    private messageService: MessageService
   ) {
     this.initializeChart();
   }
@@ -60,8 +69,7 @@ export class ProductDetail implements OnInit {
       if (!params.has('id')) {
         throw new Error('Product ID not provided');
       }
-      this.id = Number(params.get('id'));
-      this.productService.getProductDetailed(this.id).subscribe((product) => {
+      this.productService.getProductDetailed(Number(params.get('id'))).subscribe((product) => {
         this.product = product;
         this.imagemAtiva = 0; // Reset da imagem ativa para o novo produto
         this.setupBreadcrumb();
@@ -103,7 +111,6 @@ export class ProductDetail implements OnInit {
   }
 
   private extractMarcaOficial(): void {
-    // Usa a entidade brand do backend em vez de extrair do título
     if (this.product.brand && this.product.brand.name) {
       this.marcaOficial = this.product.brand.name;
     } else {
@@ -291,8 +298,44 @@ export class ProductDetail implements OnInit {
     }
   }
 
-  // Método para trocar a imagem ativa na galeria
   trocarImagem(index: number): void {
     this.imagemAtiva = index;
+  }
+
+  alertaAtivado = false;
+  createAlert(): void {
+    this.alertaAtivado = !this.alertaAtivado;
+    if (this.isCreatingAlert) {
+      return;
+    }
+
+    this.isCreatingAlert = true;
+
+    const discountPrice = this.alertService.calculateDiscountPrice(this.menorPreco);
+
+    const alertRequest: AlertRequest = {
+      productId: this.product.id,
+      desiredPrice: discountPrice,
+    };
+
+    this.alertService.createAlert(alertRequest).subscribe({
+      next: (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Alerta Criado!',
+          detail: `Você será notificado quando o preço chegar a R$ ${discountPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        });
+        this.isCreatingAlert = false;
+      },
+      error: (error) => {
+        console.error('Erro ao criar alerta:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Não foi possível criar o alerta. Tente novamente.',
+        });
+        this.isCreatingAlert = false;
+      },
+    });
   }
 }

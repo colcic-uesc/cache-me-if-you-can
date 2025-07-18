@@ -3,6 +3,7 @@ import { Brand } from "../models/brand";
 import { CategoryResponse } from "../models/category";
 
 export interface ProductDetailedResponse {
+  id: number;
   title: string;
   description: string;
   released: Date;

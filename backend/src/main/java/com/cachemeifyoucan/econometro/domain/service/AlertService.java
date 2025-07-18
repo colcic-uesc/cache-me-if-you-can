@@ -1,5 +1,6 @@
 package com.cachemeifyoucan.econometro.domain.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -64,12 +65,20 @@ public class AlertService {
         .map(alert -> {
             Offer offer = alert.getProduct().getBestOffer();
             AlertResponse.Offer fullfillingOffer = null;
-            if (offer != null && alert.getDesiredPrice().compareTo(offer.getPrice()) >= 0) {
-                Seller seller = offer.getSeller();
-                String sellerImage = seller.getImage() == null ? null : seller.getImage().getContent();
-                fullfillingOffer = new AlertResponse.Offer(seller.getId(), seller.getName(), sellerImage, offer.getPrice());
+            BigDecimal bestPrice = null;
+            if (offer != null) {
+                bestPrice = offer.getPrice();
+                if (alert.getDesiredPrice().compareTo(offer.getPrice()) >= 0) {
+                    Seller seller = offer.getSeller();
+                    String sellerImage = seller.getImage() == null ? null : seller.getImage().getContent();
+                    fullfillingOffer = new AlertResponse.Offer(seller.getId(), seller.getName(), sellerImage, offer.getPrice());
+                }
             }
-            return new AlertResponse(alert.getProduct().getId(), alert.getProduct().getTitle(), alert.getDesiredPrice(), fullfillingOffer);
+            String imageContent = null;
+            if(alert.getProduct().getImages()!= null && !alert.getProduct().getImages().isEmpty()){
+                imageContent = alert.getProduct().getImages().get(0).getContent();
+            }
+            return new AlertResponse(alert.getProduct().getId(), alert.getProduct().getTitle(), alert.getDesiredPrice(), bestPrice, imageContent, fullfillingOffer);
         })
         .toList();
     }

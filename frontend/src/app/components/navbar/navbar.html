@@ -1,12 +1,18 @@
 <header class="navbar">
   <section class="navbar-top">
-    <figure class="logo">
-      <img src="assets/logos/logo.svg" alt="Econômetro" />
-    </figure>
+    <a routerLink="/home" class="logo">
+      <figure>
+        <img src="assets/logos/logo.svg" alt="Econômetro" />
+      </figure>
+    </a>
 
     <section class="search-bar">
       <app-search-bar></app-search-bar>
     </section>
+
+    <button class="hamburger" (click)="menuAberto = !menuAberto">
+      <i class="pi pi-bars"></i>
+    </button>
 
     <aside class="user-actions">
       @if (user) {
@@ -14,21 +20,31 @@
         <span class="user-name__initial">{{ userInitial }}</span>
         <span class="user-name__label">{{ user.name }}</span>
       </span>
+      <button class="btn-login" (click)="logout()">
+        <i class="pi pi-fw pi-sign-out"></i> Sair
+      </button>
       } @else {
       <button class="btn-login" (click)="showLogin = true">
         <i class="pi pi-user"></i> Entrar
       </button>
       }
-
-      <button class="btn-alerts"><i class="pi pi-bell"></i> Alertas</button>
+      <button class="btn-alerts" routerLink="/alerts">
+        <i class="pi pi-bell"></i> Alertas
+      </button>
     </aside>
   </section>
 
-  <nav class="category-menu" aria-label="Categorias principais">
+  <nav
+    class="category-menu"
+    [class.menu-open]="menuAberto"
+    aria-label="Categorias principais"
+  >
     <ul class="nav-bar-itens">
       @for (category of categories; track category.id) {
       <li>
-        <a [routerLink]="['/search']" [queryParams]="{ categoryId: category.id }"
+        <a
+          [routerLink]="['/search']"
+          [queryParams]="{ categoryId: category.id }"
           >{{ category.name }}</a
         >
       </li>
