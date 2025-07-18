@@ -17,11 +17,14 @@ export class Navbar implements OnInit {
   showLogin = false;
   user?: User;
   userInitial: string = '';
+  categories: CategoryResponse[] = [];
+  menuAberto = false;
+
   constructor(
     private userService: UserService,
     private categoryService: CategoryService
   ) {}
-  categories: CategoryResponse[] = [];
+
   ngOnInit(): void {
     this.userService.getUser().subscribe((user) => {
       this.user = user;
@@ -30,7 +33,11 @@ export class Navbar implements OnInit {
       }
     });
     this.categoryService.getAll().subscribe((categories) => {
-      this.categories = categories.filter((category)=> !category.parentId);
+      this.categories = categories.filter((category) => !category.parentId);
     });
+  }
+
+  logout() {
+    this.userService.logout();
   }
 }

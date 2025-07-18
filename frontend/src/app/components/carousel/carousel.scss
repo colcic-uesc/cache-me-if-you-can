@@ -1,8 +1,22 @@
-.banner{
-  width: -webkit-fill-available;
-  display: flex;
-  justify-self: center;
+.banner-carousel {
+  width: 100%;
+
+  ::ng-deep .p-carousel-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .banner {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
 }
-.banner-carousel{
-  margin-top: 1rem;
+
+@media (max-width: 768px) {
+  .banner-carousel .banner {
+    border-radius: 0;
+  }
 }

@@ -117,6 +117,9 @@
   }
 
   @media (max-width: 768px) {
+    .footer-group{
+      flex: none;
+    }
     .footer-columns {
       flex-direction: column;
     }
