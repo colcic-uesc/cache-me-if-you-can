@@ -1,18 +1,20 @@
 <header class="navbar">
   <section class="navbar-top">
-    <a routerLink="/home" class="logo">
-      <figure>
-        <img src="assets/logos/logo.svg" alt="Econômetro" />
-      </figure>
-    </a>
+    <div class="navbar-align">
+      <a routerLink="/home" class="logo">
+        <figure>
+          <img src="assets/logos/logo.svg" alt="Econômetro" />
+        </figure>
+      </a>
+      <button class="hamburger" (click)="menuAberto = !menuAberto">
+        <i class="pi pi-bars"></i>
+      </button>
+
+    </div>
 
     <section class="search-bar">
       <app-search-bar></app-search-bar>
     </section>
-
-    <button class="hamburger" (click)="menuAberto = !menuAberto">
-      <i class="pi pi-bars"></i>
-    </button>
 
     <aside class="user-actions">
       @if (user) {

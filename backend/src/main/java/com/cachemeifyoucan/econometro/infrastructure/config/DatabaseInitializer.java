@@ -319,8 +319,8 @@ public class DatabaseInitializer implements CommandLineRunner {
             Optional<Offer> bestOffer = offerRepository.findFirstByProductIdAndEnabledOrderByPriceAsc(product.getId(), true);
             bestOffer.ifPresent(offer -> {
                 for (int i = 59; i >= 0; i--) {
-                    // Gera um fator aleatório entre -0.6 e +0.6
-                    double randomFactor = (Math.random() * 1.2) - 0.6;
+                    // Gera um fator aleatório entre -0.15 e +0.15
+                    double randomFactor = (Math.random() * 0.3) - 0.15;
                     BigDecimal variation = offer.getPrice().multiply(BigDecimal.valueOf(randomFactor));
                     BigDecimal price = offer.getPrice().add(variation).max(BigDecimal.valueOf(1.0));
                     LocalDate date = LocalDate.now().minusDays(i);
