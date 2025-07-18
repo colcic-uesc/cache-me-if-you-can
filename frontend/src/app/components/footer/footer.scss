@@ -125,7 +125,10 @@
     }
 
     .footer-bottom {
-      gap: 1rem;
+      display: block;
+      .footer-social{
+        margin-bottom: 1rem;
+      }
     }
   }
 }
