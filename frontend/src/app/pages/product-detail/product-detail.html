@@ -1,31 +1,26 @@
 @if(product) {
 <div class="layout-container">
-  <!-- Breadcrumb -->
   <nav class="breadcrumb-nav">
     <p-breadcrumb [model]="breadcrumbItems" [home]="homeItem"></p-breadcrumb>
   </nav>
 
-  <!-- Conteúdo Principal -->
-  <main class="produto-detalhes">
-    <!-- Seção do Produto -->
-    <section class="produto-principal">
-      <!-- Galeria de Imagens -->
-      <aside class="galeria-imagens">
+  <main class="product-details">
+    <section class="principal-product">
+      <aside class="image-gallery">
         @if(product.images) {
-        <figure class="imagem-principal">
+        <figure class="principal-image">
           <img
-            class="produto-imagem"
-            [src]="'data:image/png;base64,' + product.images[imagemAtiva]"
+            class="product-image"
+            [src]="'data:image/png;base64,' + product.images[activeImage]"
             [alt]="product.title"
           />
         </figure>
 
-        <!-- Miniaturas -->
-        <div class="miniaturas">
+        <div class="miniatures">
           @for(image of product.images; track $index) {
           <button
-            class="miniatura-btn"
-            [class.ativa]="$index === imagemAtiva"
+            class="miniature-btn"
+            [class.ativa]="$index === activeImage"
             type="button"
             (click)="trocarImagem($index)"
           >
@@ -39,38 +34,38 @@
         }
       </aside>
 
-      <!-- Informações do Produto -->
       <section class="produto-info">
         <header class="produto-header">
-          <h1 class="produto-titulo">{{product.title}}</h1>
-          <div class="avaliacao">
+          <h1 class="product-title">{{product.title}}</h1>
+          <div class="product-evaluation">
             <p-rating [ngModel]="4.5" [readonly]="true" [stars]="5"></p-rating>
-            <span class="nota-avaliacao">4.5</span>
+            <span class="nota-product-evaluation">4.5</span>
           </div>
         </header>
 
-        <!-- Preço Principal -->
-        <div class="preco-principal">
-          <div class="preco-info">
-            <span class="preco-valor"
-              >R$ {{menorPreco | number:'1.2-2':'pt'}}</span
+        <div class="main-price">
+          <div class="price-info">
+            <span class="price-value"
+              >R$ {{lowestPrice | number:'1.2-2':'pt'}}</span
             >
-            <i class="pi pi-bell preco-alerta-icon" (click)="createAlert()" [class.preco-alerta-ativo]="alertaAtivado"></i>
+            <i
+              class="pi pi-bell price-alert-icon"
+              (click)="createAlert()"
+              [class.active-alert-price]="alertActivated"
+            ></i>
           </div>
-          <p class="loja-menor-preco">Na loja {{menorLoja}}</p>
+          <p class="lowest-price-store">Na loja {{smallestStore}}</p>
         </div>
 
-        <!-- Marca Oficial -->
-        <div class="marca-oficial">
-          <span class="marca-label">Marca Oficial</span>
+        <div class="oficial-brand">
+          <span class="brand-label">Marca Oficial</span>
           <p-chip
-            [label]="marcaOficial"
+            [label]="officialBrand"
             icon="pi pi-check-circle"
             styleClass="marca-chip"
           ></p-chip>
         </div>
 
-        <!-- Botão Comparar -->
         <p-button
           label="Comparar Preços"
           styleClass="p-button-success comparar-btn"
@@ -79,7 +74,6 @@
       </section>
     </section>
 
-    <!-- Seção de Ofertas -->
     <section class="ofertas-section">
       <h2 class="ofertas-titulo">Ofertas Disponíveis</h2>
 
@@ -87,29 +81,27 @@
         @for(offer of product.offers; track offer.sellerId) {
         <article
           class="oferta-card"
-          [class.menor-preco]="offer.price === menorPreco"
+          [class.menor-preco]="offer.price === lowestPrice"
         >
-          <div class="etiqueta-menor" *ngIf="offer.price === menorPreco">
+          <div class="etiqueta-menor" *ngIf="offer.price === lowestPrice">
             Menor preço
           </div>
 
-          <div class="produto-imagem-card">
+          <div class="product-image-card">
             <img
               [src]="'data:image/png;base64,' + product.images[0]"
               [alt]="product.title"
             />
           </div>
 
-          <!-- Preço -->
           <div class="oferta-preco">
             <span class="preco">R$ {{offer.price | number:'1.2-2':'pt'}}</span>
             <span class="preco-label">à vista</span>
           </div>
 
-          <!-- Loja -->
-          <div class="loja-info">
-            <div class="loja-imagem">
-              <span class="loja-nome">{{offer.sellerName}}</span>
+          <div class="seller-info">
+            <div class="seller-image">
+              <span class="seller-name">{{offer.sellerName}}</span>
               <img
                 [src]="'data:image/svg+xml;base64,' + offer.sellerImage"
                 [alt]="'Logo ' + offer.sellerName"
@@ -130,12 +122,10 @@
       </div>
     </section>
 
-    <!-- Histórico de Preços -->
-    <section class="historico-section">
-      <h2 class="historico-titulo">Histórico de Preços</h2>
+    <section class="historic-section">
+      <h2 class="historic-title">Histórico de Preços</h2>
 
-      <!-- Gráfico -->
-      <div class="grafico-container">
+      <div class="graphic-container">
         @if(chartData && chartData.labels.length > 1) {
         <p-chart
           type="line"
@@ -144,32 +134,31 @@
           styleClass="historico-chart"
         ></p-chart>
         } @else {
-        <div class="sem-dados-grafico">
+        <div class="no-graphic-data">
           <p>Dados de histórico não disponíveis para este produto</p>
         </div>
         }
       </div>
 
-      <!-- Filtros do Gráfico -->
-      <div class="filtros-grafico">
+      <div class="graphic-filters">
         <p-button
           label="30 dias"
-          styleClass="p-button-text filtro-btn ativo"
+          styleClass="p-button-text filter-btn active"
           size="small"
         ></p-button>
         <p-button
           label="3 meses"
-          styleClass="p-button-text filtro-btn"
+          styleClass="p-button-text filter-btn"
           size="small"
         ></p-button>
         <p-button
           label="6 meses"
-          styleClass="p-button-text filtro-btn"
+          styleClass="p-button-text filter-btn"
           size="small"
         ></p-button>
         <p-button
           label="1 ano"
-          styleClass="p-button-text filtro-btn"
+          styleClass="p-button-text filter-btn"
           size="small"
         ></p-button>
       </div>
@@ -177,7 +166,7 @@
   </main>
 </div>
 } @else {
-<!-- Estado de carregamento -->
+
 <div class="loading-container">
   <p-progressSpinner></p-progressSpinner>
   <p>Carregando produto...</p>

@@ -6,7 +6,7 @@
           <img src="assets/logos/logo.svg" alt="Econômetro" />
         </figure>
       </a>
-      <button class="hamburger" (click)="menuAberto = !menuAberto">
+      <button class="hamburger" (click)="openMenu = !openMenu">
         <i class="pi pi-bars"></i>
       </button>
 
@@ -38,7 +38,7 @@
 
   <nav
     class="category-menu"
-    [class.menu-open]="menuAberto"
+    [class.menu-open]="openMenu"
     aria-label="Categorias principais"
   >
     <ul class="nav-bar-itens">

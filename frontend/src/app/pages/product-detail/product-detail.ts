@@ -6,7 +6,6 @@ import { ProductDetailedResponse } from '../../domain/dto/product-detailed-respo
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Imports do PrimeNG
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { RatingModule } from 'primeng/rating';
 import { ChipModule } from 'primeng/chip';
@@ -38,21 +37,17 @@ import { AlertRequest } from '../../domain/dto/alert-request';
 export class ProductDetail implements OnInit {
   product!: ProductDetailedResponse;
 
-  // Propriedades para o breadcrumb
   breadcrumbItems: MenuItem[] = [];
   homeItem: MenuItem = { icon: 'pi pi-home', routerLink: '/' };
 
-  // Propriedades calculadas
-  menorPreco = 0;
-  marcaOficial = '';
-  imagemAtiva = 0; // Índice da imagem ativa na galeria
-  menorLoja: string = '';
+  lowestPrice = 0;
+  officialBrand = '';
+  activeImage = 0;
+  smallestStore: string = '';
 
-  // Dados do gráfico
   chartData: any;
   chartOptions: any;
 
-  // Estado do alerta
   isCreatingAlert = false;
 
   constructor(
@@ -69,24 +64,25 @@ export class ProductDetail implements OnInit {
       if (!params.has('id')) {
         throw new Error('Product ID not provided');
       }
-      this.productService.getProductDetailed(Number(params.get('id'))).subscribe((product) => {
-        this.product = product;
-        this.imagemAtiva = 0; // Reset da imagem ativa para o novo produto
-        this.setupBreadcrumb();
-        this.calculateMenorPreco();
-        this.extractMarcaOficial();
-        this.updateChartData();
-        this.product.offers.sort((a, b) => a.price - b.price);
-        this.menorPreco = this.product.offers[0]?.price;
-        this.menorLoja = this.product.offers[0]?.sellerName;
-      });
+      this.productService
+        .getProductDetailed(Number(params.get('id')))
+        .subscribe((product) => {
+          this.product = product;
+          this.activeImage = 0;
+          this.setupBreadcrumb();
+          this.calculatelowestPrice();
+          this.extractofficialBrand();
+          this.updateChartData();
+          this.product.offers.sort((a, b) => a.price - b.price);
+          this.lowestPrice = this.product.offers[0]?.price;
+          this.smallestStore = this.product.offers[0]?.sellerName;
+        });
     });
   }
 
   private setupBreadcrumb(): void {
     this.breadcrumbItems = [{ label: 'Home', routerLink: '/' }];
 
-    // Adiciona a categoria do produto se existir
     if (this.product.category && this.product.category.name) {
       this.breadcrumbItems.push({
         label: this.product.category.name,
@@ -96,25 +92,24 @@ export class ProductDetail implements OnInit {
       });
     }
 
-    // Adiciona o título do produto como último item (sem link)
     this.breadcrumbItems.push({
       label: this.product.title,
     });
   }
 
-  private calculateMenorPreco(): void {
+  private calculatelowestPrice(): void {
     if (this.product.offers && this.product.offers.length > 0) {
-      this.menorPreco = Math.min(
+      this.lowestPrice = Math.min(
         ...this.product.offers.map((offer) => offer.price)
       );
     }
   }
 
-  private extractMarcaOficial(): void {
+  private extractofficialBrand(): void {
     if (this.product.brand && this.product.brand.name) {
-      this.marcaOficial = this.product.brand.name;
+      this.officialBrand = this.product.brand.name;
     } else {
-      this.marcaOficial = 'Marca não identificada';
+      this.officialBrand = 'Marca não identificada';
     }
   }
 
@@ -139,7 +134,7 @@ export class ProductDetail implements OnInit {
           grid: {
             color: '#e0e0e0',
           },
-          beginAtZero: false, // Permite que a escala se ajuste aos dados
+          beginAtZero: false,
           ticks: {
             callback: function (value: any) {
               return (
@@ -171,10 +166,8 @@ export class ProductDetail implements OnInit {
   }
 
   private updateChartData(): void {
-    // Limpa dados anteriores completamente
     this.chartData = null;
 
-    // Remove o setTimeout que pode estar causando problemas
     if (
       this.product &&
       this.product.history &&
@@ -182,7 +175,6 @@ export class ProductDetail implements OnInit {
     ) {
       console.log('Dados do histórico recebidos:', this.product.history);
 
-      // Ordena o histórico por data para garantir ordem cronológica
       const sortedHistory = [...this.product.history].sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       );
@@ -198,17 +190,15 @@ export class ProductDetail implements OnInit {
       const prices = sortedHistory.map((h) => Number(h.price));
       console.log('Preços processados:', prices);
 
-      // Calcula min e max para ajustar a escala Y
       const minPrice = Math.min(...prices);
       const maxPrice = Math.max(...prices);
       const range = maxPrice - minPrice;
-      const padding = range > 0 ? range * 0.1 : maxPrice * 0.1; // 10% de padding
+      const padding = range > 0 ? range * 0.1 : maxPrice * 0.1;
 
       console.log(
         `Min: ${minPrice}, Max: ${maxPrice}, Range: ${range}, Padding: ${padding}`
       );
 
-      // Cria nova instância das opções do gráfico com escala específica
       this.chartOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -282,7 +272,7 @@ export class ProductDetail implements OnInit {
       );
     } else {
       console.log('Sem dados de histórico disponíveis');
-      // Estado para produtos sem histórico
+
       this.chartData = {
         labels: ['Sem dados'],
         datasets: [
@@ -299,19 +289,21 @@ export class ProductDetail implements OnInit {
   }
 
   trocarImagem(index: number): void {
-    this.imagemAtiva = index;
+    this.activeImage = index;
   }
 
-  alertaAtivado = false;
+  alertActivated = false;
   createAlert(): void {
-    this.alertaAtivado = !this.alertaAtivado;
+    this.alertActivated = !this.alertActivated;
     if (this.isCreatingAlert) {
       return;
     }
 
     this.isCreatingAlert = true;
 
-    const discountPrice = this.alertService.calculateDiscountPrice(this.menorPreco);
+    const discountPrice = this.alertService.calculateDiscountPrice(
+      this.lowestPrice
+    );
 
     const alertRequest: AlertRequest = {
       productId: this.product.id,
@@ -323,7 +315,10 @@ export class ProductDetail implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Alerta Criado!',
-          detail: `Você será notificado quando o preço chegar a R$ ${discountPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          detail: `Você será notificado quando o preço chegar a R$ ${discountPrice.toLocaleString(
+            'pt-BR',
+            { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+          )}`,
         });
         this.isCreatingAlert = false;
       },

@@ -18,7 +18,7 @@ export class Navbar implements OnInit {
   user?: User;
   userInitial: string = '';
   categories: CategoryResponse[] = [];
-  menuAberto = false;
+  openMenu = false;
 
   constructor(
     private userService: UserService,

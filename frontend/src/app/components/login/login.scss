@@ -1,11 +1,11 @@
 .login-container {
   max-width: 400px;
   margin: auto;
-  background-color: var(--cor-branco);
+  background-color: var(--white-color);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 4px 12px var(--cor-preto);
-  font-family: var(--fonte-textos);
+  box-shadow: 0 4px 12px var(--black-color);
+  font-family: var(--text-font);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -17,11 +17,11 @@
     right: 1rem;
 
     ::ng-deep .p-button {
-      color: var(--cor-desfoque);
+      color: var(--blur-color);
 
       &:hover {
-        background-color: var(--cor-de-cartao);
-        color: var(--cor-preto);
+        background-color: var(--card-color);
+        color: var(--black-color);
       }
     }
   }
@@ -39,17 +39,17 @@
   &__title {
     font-size: 1.8rem;
     margin: 0;
-    color: var(--cor-preto);
+    color: var(--black-color);
     font-weight: 600;
-    font-family: var(--fonte-titulos);
+    font-family: var(--title-font);
   }
 
   &__description {
     font-size: 0.9rem;
-    color: var(--cor-preto);
+    color: var(--black-color);
     margin-top: 0.5rem;
     line-height: 1.4;
-    font-family: var(--fonte-textos);
+    font-family: var(--text-font);
   }
 
   // Formulário
@@ -87,9 +87,9 @@
 
   &__label {
     font-size: 0.9rem;
-    color: var(--cor-preto);
+    color: var(--black-color);
     font-weight: 500;
-    font-family: var(--fonte-textos);
+    font-family: var(--text-font);
   }
 
   // componentes PrimeNG
@@ -97,23 +97,23 @@
     .p-inputgroup {
       .p-inputtext {
         font-size: 0.9rem;
-        border-color: var(--cor-de-borda);
+        border-color: var(--border-color);
         background-color: transparent;
-        color: var(--cor-preto);
+        color: var(--black-color);
 
         &:focus {
-          border-color: var(--cor-secundaria);
+          border-color: var(--secondary-color);
         }
 
         &::placeholder {
-          color: var(--cor-desfoque);
+          color: var(--blur-color);
         }
       }
 
       .p-inputgroup-addon {
-        background-color: var(--cor-de-cartao);
-        border-color: var(--cor-de-borda);
-        color: var(--cor-desfoque);
+        background-color: var(--card-color);
+        border-color: var(--border-color);
+        color: var(--blur-color);
 
       }
       .p-inputgroupaddon{
@@ -123,16 +123,16 @@
 
     .login-container__submit-btn .p-button {
       width: 100%;
-      background-color: var(--cor-de-terciaria);
-      border-color: var(--cor-de-terciaria);
-      font-family: var(--fonte-textos);
+      background-color: var(--tertiary-color);
+      border-color: var(--tertiary-color);
+      font-family: var(--text-font);
       font-weight: 500;
       margin-top: 0.5rem;
-      color: var(--cor-branco);
+      color: var(--white-color);
 
       &:hover:not(:disabled) {
-        background-image: var(--cor-gradiente);
-        border-color: var(--cor-branco);
+        background-image: var(--gradient-color);
+        border-color: var(--white-color);
       }
 
       &:disabled {
@@ -145,13 +145,13 @@
     }
     .login-container__register-btn .p-button {
       width: 100%;
-      color: var(--cor-preto);
-      border-color: var(--cor-de-terciaria);
+      color: var(--black-color);
+      border-color: var(--tertiary-color);
 
       &:hover {
-        background-image: var(--cor-gradiente);
-        border-color: var(--cor-secundaria);
-        color: var(--cor-branco);
+        background-image: var(--gradient-color);
+        border-color: var(--secondary-color);
+        color: var(--white-color);
       }
     }
 
@@ -159,12 +159,12 @@
       margin: 0;
 
       .p-divider-content {
-        background-color: var(--cor-branco);
+        background-color: var(--white-color);
         padding: 0 1rem;
       }
 
       &::before {
-        border-top-color: var(--cor-de-borda);
+        border-top-color: var(--border-color);
       }
     }
   }
@@ -177,22 +177,22 @@
   }
 
   &__forgot-link {
-    color: var(--cor-preto);
+    color: var(--black-color);
     text-decoration: underline;
     font-size: 0.9rem;
-    font-family: var(--fonte-textos);
+    font-family: var(--text-font);
     cursor: pointer;
     transition: color 0.2s ease;
 
     &:hover {
-      color: var(--cor-de-terciaria);
+      color: var(--tertiary-color);
     }
   }
 
   &__divider-text {
     font-size: 0.9rem;
-    color: var(--cor-desfoque);
-    font-family: var(--fonte-textos);
+    color: var(--blur-color);
+    font-family: var(--text-font);
   }
 }
 

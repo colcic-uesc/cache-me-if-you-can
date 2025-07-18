@@ -18,39 +18,38 @@ app-root {
 
 :root {
   /* padrao */
-  --cor-principal: #F9ED0E;
-  --cor-secundaria: #3FBF52;
-  --cor-de-terciaria: #012326;
-  --cor-preto: #000000;
-  --cor-branco: #ffffff;
+  --primary-color: #F9ED0E;
+  --secondary-color: #3FBF52;
+  --tertiary-color: #012326;
+  --black-color: #000000;
+  --white-color: #ffffff;
 
 
   /* fundo */
-  --cor-gradiente: linear-gradient(97.54deg, #164128 0%, #112230 100%);
-  --cor-de-cartao: #d9d9d9;
-  --cor-botao-hover: #8f9096;
+  --gradient-color: linear-gradient(97.54deg, #164128 0%, #112230 100%);
+  --card-color: #d9d9d9;
+  --button-hover-color: #8f9096;
 
   /* texto */
-  --cor-secundaria-texto: #ffd870;
-  --cor-sombra: #515252;
+  --shadow-color: #515252;
   --cor-hover-nav: #CB8242;
-  --cor-desfoque: #696a6b;
+  --blur-color: #696a6b;
 
   /* bordas */
-  --cor-de-borda: #cfcfcf;
+  --border-color: #cfcfcf;
 
   /* fontes */
-  --fonte-titulos: "Montserrat", sans-serif;
-  --fonte-textos: "Poppins", sans-serif;
+  --title-font: "Montserrat", sans-serif;
+  --text-font: "Poppins", sans-serif;
 }
 
 body {
-  background-color: var(--cor-de-fundo);
-  font-family: var(--fonte-textos);
+  background-color: var(--white-color);
+  font-family: var(--text-font);
   font-size: 16px;
   font-weight: 400;
   margin: 0;
-  color: var(--cor-preto);
+  color: var(--black-color);
 }
 /* ===== BASE DE LAYOUT BASEADO NO DESIGN DO ===== */
 .layout-container {

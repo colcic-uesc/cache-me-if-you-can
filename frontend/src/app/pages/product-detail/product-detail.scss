@@ -10,31 +10,31 @@
 
     .p-breadcrumb-list {
       .p-menuitem-link {
-        color: var(--cor-desfoque);
+        color: var(--blur-color);
         text-decoration: none;
         font-size: 0.875rem;
 
         &:hover {
-          color: var(--cor-preto);
+          color: var(--black-color);
         }
       }
 
       .p-menuitem-separator {
-        color: var(--cor-desfoque);
+        color: var(--blur-color);
         margin: 0 0.5rem;
       }
     }
   }
 }
 
-.produto-detalhes {
+.product-details {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
 // ===== SEÇÃO PRINCIPAL DO PRODUTO =====
-.produto-principal {
+.principal-product {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
@@ -47,20 +47,20 @@
 }
 
 // ===== GALERIA DE IMAGENS =====
-.galeria-imagens {
+.image-gallery {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.imagem-principal {
+.principal-image {
   margin: 0;
-  background: var(--cor-branco);
+  background: var(--white-color);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-  .produto-imagem {
+  .product-image {
     width: 100%;
     height: auto;
     max-height: 400px;
@@ -69,24 +69,24 @@
   }
 }
 
-.miniaturas {
+.miniatures {
   display: flex;
   gap: 0.75rem;
   justify-content: flex-start;
 
-  .miniatura-btn {
+  .miniature-btn {
     width: 80px;
     height: 80px;
-    border: 2px solid var(--cor-de-borda);
+    border: 2px solid var(--border-color);
     border-radius: 8px;
-    background: var(--cor-branco);
+    background: var(--white-color);
     padding: 0.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
 
     &:hover,
     &.ativa {
-      border-color: var(--cor-secundaria);
+      border-color: var(--secondary-color);
       box-shadow: 0 2px 8px rgba(63, 191, 82, 0.2);
     }
 
@@ -106,16 +106,16 @@
 }
 
 .produto-header {
-  .produto-titulo {
-    font-family: var(--fonte-titulos);
+  .product-title {
+    font-family: var(--title-font);
     font-size: 2.5rem;
     font-weight: 600;
-    color: var(--cor-preto);
+    color: var(--black-color);
     margin: 0 0 1rem 0;
     line-height: 1.3;
   }
 
-  .avaliacao {
+  .product-evaluation {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -123,49 +123,49 @@
     ::ng-deep .p-rating {
       .p-rating-item {
         .p-rating-icon {
-          color: var(--cor-principal);
+          color: var(--primary-color);
           font-size: 1.1rem;
         }
       }
     }
 
-    .nota-avaliacao {
+    .nota-product-evaluation {
       font-weight: 500;
-      color: var(--cor-preto);
+      color: var(--black-color);
       font-size: 0.95rem;
     }
   }
 }
 
-.preco-principal {
+.main-price {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin: 1rem 0;
 
-  .preco-info {
+  .price-info {
     display: flex;
     align-items: center;
     gap: 0.75rem;
   }
 
-  .preco-valor {
-    font-family: var(--fonte-titulos);
+  .price-value {
+    font-family: var(--title-font);
     font-size: 2.25rem;
     font-weight: 700;
-    color: var(--cor-preto);
+    color: var(--black-color);
   }
 
-  .preco-alerta-icon {
+  .price-alert-icon {
     font-size: 1.5rem;
-    color: var(--cor-desfoque);
+    color: var(--blur-color);
     cursor: pointer;
     transition: all 0.2s ease;
     padding: 0.5rem;
     border-radius: 50%;
 
     &:hover {
-      color: var(--cor-secundaria);
+      color: var(--secondary-color);
       background-color: rgba(63, 191, 82, 0.1);
       transform: scale(1.1);
     }
@@ -175,21 +175,21 @@
       background-color: #2ecc71;
     }
   }
-  .preco-alerta-ativo {
-    color: var(--cor-secundaria);
+  .active-alert-price {
+    color: var(--secondary-color);
     background-color: rgba(63, 191, 82, 0.1);
   }
 
-  .loja-menor-preco {
+  .lowest-price-store {
     font-size: 0.875rem;
-    color: var(--cor-desfoque);
+    color: var(--blur-color);
     margin: 0.25rem 0 0 0;
   }
 
   ::ng-deep .preco-chip {
     .p-chip {
-      background-color: var(--cor-secundaria);
-      color: var(--cor-branco);
+      background-color: var(--secondary-color);
+      color: var(--white-color);
       font-size: 0.75rem;
       font-weight: 500;
       padding: 0.25rem 0.75rem;
@@ -197,28 +197,28 @@
   }
 }
 
-.marca-oficial {
+.oficial-brand {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  background: var(--cor-branco);
+  background: var(--white-color);
   border-radius: 8px;
-  border: 1px solid var(--cor-de-borda);
+  border: 1px solid var(--border-color);
 
-  .marca-label {
+  .brand-label {
     font-weight: 500;
-    color: var(--cor-preto);
+    color: var(--black-color);
   }
 
   ::ng-deep .marca-chip {
     .p-chip {
-      background-color: var(--cor-de-terciaria);
-      color: var(--cor-branco);
+      background-color: var(--tertiary-color);
+      color: var(--white-color);
       font-weight: 500;
 
       .p-chip-icon {
-        color: var(--cor-secundaria);
+        color: var(--secondary-color);
         margin-right: 0.5rem;
       }
     }
@@ -227,8 +227,8 @@
 
 ::ng-deep .comparar-btn {
   .p-button {
-    background-color: var(--cor-de-terciaria);
-    border-color: var(--cor-de-terciaria);
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
     font-weight: 600;
     padding: 0.875rem 1.5rem;
     font-size: 1rem;
@@ -243,10 +243,10 @@
 // ===== SEÇÃO DE OFERTAS =====
 .ofertas-section {
   .ofertas-titulo {
-    font-family: var(--fonte-titulos);
+    font-family: var(--title-font);
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--cor-preto);
+    color: var(--black-color);
     margin: 0 0 1.5rem 0;
   }
 }
@@ -259,8 +259,8 @@
 .etiqueta-menor {
   position: absolute;
   top: 0;
-  background-color: var(--cor-secundaria);
-  color: var(--cor-branco);
+  background-color: var(--secondary-color);
+  color: var(--white-color);
   font-weight: bold;
   padding: 4px 10px;
   border-radius: 4px 0 4px 0;
@@ -274,15 +274,15 @@
   align-items: center;
   gap: 1.5rem;
   padding: 1.25rem;
-  background: var(--cor-branco);
+  background: var(--white-color);
   border-radius: 12px;
-  border: 1px solid var(--cor-de-borda);
+  border: 1px solid var(--border-color);
   transition: all 0.2s ease;
 
   position: relative;
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: var(--cor-secundaria);
+    border-color: var(--secondary-color);
   }
 
   &.menor-preco {
@@ -296,7 +296,7 @@
   }
 }
 
-.loja-imagem {
+.seller-image {
   height: 60px;
   display: flex;
   align-items: center;
@@ -310,7 +310,7 @@
     object-fit: contain;
   }
 }
-.produto-imagem-card img {
+.product-image-card img {
   width: 60px;
   height: auto;
   border-radius: 4px;
@@ -321,29 +321,29 @@
   flex-direction: column;
 
   .preco {
-    font-family: var(--fonte-titulos);
+    font-family: var(--title-font);
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--cor-preto);
+    color: var(--black-color);
     line-height: 1.2;
   }
 
   .preco-label {
     font-size: 0.875rem;
-    color: var(--cor-desfoque);
+    color: var(--blur-color);
   }
 }
 
-.loja-info {
+.seller-info {
   display: flex;
   align-items: center;
   gap: 0.25rem;
   justify-self: right;
   flex-direction: column;
 
-  .loja-nome {
+  .seller-name {
     font-weight: 500;
-    color: var(--cor-preto);
+    color: var(--black-color);
     font-size: 1rem;
   }
 
@@ -354,46 +354,46 @@
 
     .status-icon {
       font-size: 0.5rem;
-      color: var(--cor-secundaria);
+      color: var(--secondary-color);
     }
 
     .status-text {
       font-size: 0.875rem;
-      color: var(--cor-desfoque);
+      color: var(--blur-color);
     }
   }
 }
 
 ::ng-deep .ver-oferta-btn {
   .p-button {
-    border-color: var(--cor-de-terciaria);
-    color: var(--cor-de-terciaria);
+    border-color: var(--tertiary-color);
+    color: var(--tertiary-color);
     font-weight: 500;
     padding: 0.5rem 1.25rem;
     width: 25rem;
     &:hover {
-      background-color: var(--cor-de-terciaria);
-      color: var(--cor-branco);
+      background-color: var(--tertiary-color);
+      color: var(--white-color);
     }
   }
 }
 
 // ===== HISTÓRICO DE PREÇOS =====
-.historico-section {
-  .historico-titulo {
-    font-family: var(--fonte-titulos);
+.historic-section {
+  .historic-title {
+    font-family: var(--title-font);
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--cor-preto);
+    color: var(--black-color);
     margin: 0 0 1.5rem 0;
   }
 }
 
-.grafico-container {
-  background: var(--cor-branco);
+.graphic-container {
+  background: var(--white-color);
   border-radius: 12px;
   padding: 1.5rem;
-  border: 1px solid var(--cor-de-borda);
+  border: 1px solid var(--border-color);
   margin-bottom: 1rem;
 
   ::ng-deep .historico-chart {
@@ -404,12 +404,12 @@
     }
   }
 
-  .sem-dados-grafico {
+  .no-graphic-data {
     height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--cor-desfoque);
+    color: var(--blur-color);
     font-style: italic;
 
     p {
@@ -419,26 +419,26 @@
   }
 }
 
-.filtros-grafico {
+.graphic-filters {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   flex-wrap: wrap;
 
-  ::ng-deep .filtro-btn {
+  ::ng-deep .filter-btn {
     .p-button {
-      color: var(--cor-desfoque);
+      color: var(--blur-color);
       font-weight: 500;
       padding: 0.5rem 1rem;
 
       &:hover {
-        color: var(--cor-preto);
+        color: var(--black-color);
         background-color: rgba(0, 0, 0, 0.05);
       }
     }
 
-    &.ativo .p-button {
-      color: var(--cor-de-terciaria);
+    &.active .p-button {
+      color: var(--tertiary-color);
       background-color: rgba(1, 35, 38, 0.1);
     }
   }
@@ -454,21 +454,21 @@
   gap: 1rem;
 
   p {
-    color: var(--cor-desfoque);
+    color: var(--blur-color);
     font-size: 1.1rem;
     margin: 0;
   }
 
   ::ng-deep .p-progress-spinner {
     .p-progress-spinner-circle {
-      stroke: var(--cor-secundaria);
+      stroke: var(--secondary-color);
     }
   }
 }
 
 // ===== RESPONSIVIDADE =====
 @media (max-width: 1024px) {
-  .produto-principal {
+  .principal-product {
     gap: 2rem;
   }
 
@@ -490,34 +490,34 @@
   }
 
   .produto-info {
-    .produto-titulo {
+    .product-title {
       font-size: 1.5rem;
     }
 
-    .preco-principal {
+    .main-price {
       flex-direction: column;
       align-items: flex-start;
       gap: 0.5rem;
 
-      .preco-valor {
+      .price-value {
         font-size: 2rem;
       }
     }
   }
 
-  .miniaturas {
+  .miniatures {
     justify-content: center;
 
-    .miniatura-btn {
+    .miniature-btn {
       width: 70px;
       height: 70px;
     }
   }
 
-  .filtros-grafico {
+  .graphic-filters {
     gap: 0.25rem;
 
-    ::ng-deep .filtro-btn .p-button {
+    ::ng-deep .filter-btn .p-button {
       padding: 0.375rem 0.75rem;
       font-size: 0.875rem;
     }

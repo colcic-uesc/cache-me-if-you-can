@@ -1,67 +1,66 @@
 <main class="layout-container">
-  <!-- Carrossel de Logos -->
   <app-carousel></app-carousel>
 
-
-
-  <!-- Seção de Produtos -->
   <section class="produtos-section">
     <header class="section-header">
-      <h2 class="section-title">Encontre a melhor oferta de produtos com nosso Alerta de Preço!</h2>
+      <h2 class="section-title">
+        Encontre a melhor oferta de produtos com nosso Alerta de Preço!
+      </h2>
     </header>
 
-    <!-- Grid de Produtos -->
     <div class="products-grid">
-      @if(products && products.length > 0) {
-        @for(product of products; track product.id) {
-          <article class="product-card" (click)="goToProduct(product.id)">
+      @if(products && products.length > 0) { @for(product of products; track
+      product.id) {
+      <article class="product-card" (click)="goToProduct(product.id)">
+        <figure class="product-image">
+          <img
+            [src]="'data:image/png;base64,' + product.imageContent"
+            [alt]="product.title"
+            loading="lazy"
+          />
+        </figure>
 
-            <!-- Imagem do Produto -->
-            <figure class="product-image">
-              <img
-                [src]="'data:image/png;base64,' + product.imageContent"
-                [alt]="product.title"
-                loading="lazy"
-              />
-            </figure>
+        <div class="product-info">
+          <h3 class="product-title">{{product.title}}</h3>
 
-            <!-- Informações do Produto -->
-            <div class="product-info">
-              <h3 class="product-title">{{product.title}}</h3>
+          <div class="product-pricing">
+            <span class="current-price"
+              >R$ {{product.bestPrice | number:'1.2-2':'pt'}}</span
+            >
+          </div>
 
-              <!-- Menor Preço -->
-              <div class="product-pricing">
-                <span class="current-price">R$ {{product.bestPrice | number:'1.2-2':'pt'}}</span>
-              </div>
-
-              <!-- Loja com Menor Preço -->
-              <div class="best-offer">
-                <span class="offer-label">Menor preço via {{product.sellerName}}</span>
-                <div class="offer-status">
-                  <i class="pi pi-circle-fill status-icon"></i>
-                  <span class="status-text">Comparar preço • {{ product.offers }} lojas</span>
-                </div>
-              </div>
+          <div class="best-offer">
+            <span class="offer-label"
+              >Menor preço via {{product.sellerName}}</span
+            >
+            <div class="offer-status">
+              <i class="pi pi-circle-fill status-icon"></i>
+              <span class="status-text"
+                >Comparar preço • {{ product.offers }} lojas</span
+              >
             </div>
-          </article>
-        }
-      } @else if(isLoading) {
-        <!-- Estado de Carregamento -->
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Carregando produtos...</p>
+          </div>
         </div>
+      </article>
+      } } @else if(isLoading) {
+
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Carregando produtos...</p>
+      </div>
       } @else {
-        <!-- Estado Vazio -->
-        <div class="empty-state">
-          <i class="pi pi-search empty-icon"></i>
-          <h2>Nenhum produto encontrado</h2>
-          <p>Não foi possível carregar os produtos no momento</p>
-        </div>
+
+      <div class="empty-state">
+        <i class="pi pi-search empty-icon"></i>
+        <h2>Nenhum produto encontrado</h2>
+        <p>Não foi possível carregar os produtos no momento</p>
+      </div>
       }
     </div>
   </section>
-   <!-- Banner Promocional -->
-  <img src="assets/image/banner-info.png" class="banner-promocional" alt="Banner promocional"/>
+  <img
+    src="assets/image/banner-info.png"
+    class="banner-promocional"
+    alt="Banner promocional"
+  />
 </main>
-

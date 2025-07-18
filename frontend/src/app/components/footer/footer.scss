@@ -1,11 +1,11 @@
 .footer {
-  background-color: var(--cor-preto);
-  color: var(--cor-branco);
+  background-color: var(--black-color);
+  color: var(--white-color);
   padding: 2rem 0;
   font-size: 0.9rem;
 
   .layout-container {
-    background-color: var(--cor-preto);
+    background-color: var(--black-color);
   }
 
   .footer-columns {
@@ -19,7 +19,7 @@
     flex: 1 1 200px;
 
     .footer-title {
-      color: var(--cor-principal);
+      color: var(--primary-color);
       font-weight: bold;
       margin-bottom: 0.5rem;
     }
@@ -33,7 +33,7 @@
         margin: 0.3rem 0;
 
         a {
-          color: var(--cor-branco);
+          color: var(--white-color);
           text-decoration: none;
 
           &:hover {
@@ -46,18 +46,18 @@
 
   .footer-contact {
     flex: 1 1 200px;
-    color: var(--cor-principal);
+    color: var(--primary-color);
 
     .ajuda {
       font-weight: bold;
 
       span {
-        color: var(--cor-branco);
+        color: var(--white-color);
       }
     }
 
     .telefone {
-      color: var(--cor-branco);
+      color: var(--white-color);
       font-size: 1.1rem;
       margin: 0.5rem 0;
     }
@@ -70,7 +70,7 @@
 
   .footer-separator {
     border: none;
-    border-top: 1px solid var(--cor-desfoque);
+    border-top: 1px solid var(--blur-color);
     margin: 1.5rem 0;
   }
 
@@ -93,11 +93,11 @@
       gap: 1rem;
 
       a {
-        color: var(--cor-branco);
+        color: var(--white-color);
         font-size: 1.3rem;
 
         &:hover {
-          color: var(--cor-secundaria);
+          color: var(--secondary-color);
         }
       }
     }
@@ -106,7 +106,7 @@
       text-align: center;
 
       a {
-        color: var(--cor-principal);
+        color: var(--primary-color);
         text-decoration: none;
 
         &:hover {

@@ -1,10 +1,10 @@
 .search-container {
   display: flex;
   align-items: center;
-  background-color: var(--cor-branco);
+  background-color: var(--white-color);
   border-radius: 2rem;
   padding: 0.4rem 1rem;
-  box-shadow: 0 2px 4px var(--cor-de-terciaria);
+  box-shadow: 0 2px 4px var(--tertiary-color);
   width: 100%;
   max-width: 600px;
 
@@ -19,14 +19,14 @@
     color: #333;
 
     &::placeholder {
-      color: var(--cor-desfoque);
+      color: var(--blur-color);
     }
   }
 
   .search-button {
     background: none;
     border: none;
-    color: var(--cor-sombra);
+    color: var(--shadow-color);
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0 0.5rem;
@@ -34,7 +34,7 @@
     align-items: center;
 
     &:hover {
-      color: var(--cor-preto);
+      color: var(--black-color);
     }
   }
 }

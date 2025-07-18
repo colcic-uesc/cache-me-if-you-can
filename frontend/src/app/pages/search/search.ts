@@ -19,7 +19,6 @@ interface SortOption {
   styleUrl: './search.scss',
 })
 export class Search implements OnInit {
-  // Propriedades principais
   products: ProductResponse[] = [];
   query = '';
   isLoading = false;
@@ -34,7 +33,6 @@ export class Search implements OnInit {
 
   favoriteProducts: Set<number> = new Set();
 
-  // Propriedades do carrossel
   @ViewChild('carouselWrapper') carouselWrapper!: ElementRef;
   canScrollLeft = false;
   canScrollRight = true;
@@ -80,8 +78,6 @@ export class Search implements OnInit {
     });
   }
 
-  // ===== MÉTODOS DE ORDENAÇÃO =====
-
   onSortChange(value: string): void {
     this.selectedSort = value;
     this.sortProducts();
@@ -112,8 +108,6 @@ export class Search implements OnInit {
       queryParamsHandling: 'merge',
     });
   }
-
-  // ===== MÉTODOS DE NAVEGAÇÃO =====
 
   navigateToProduct(productId: number): void {
     this.router.navigate(['/product', productId]);

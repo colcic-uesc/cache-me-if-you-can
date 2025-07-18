@@ -1,14 +1,14 @@
 ::ng-deep .alert-edit-modal {
   .p-dialog-header {
-    background: var(--cor-branco);
-    border-bottom: 1px solid var(--cor-de-borda);
+    background: var(--white-color);
+    border-bottom: 1px solid var(--border-color);
     padding: 1.5rem;
 
     .p-dialog-title {
-      font-family: var(--fonte-titulos);
+      font-family: var(--title-font);
       font-size: 1.25rem;
       font-weight: 600;
-      color: var(--cor-preto);
+      color: var(--black-color);
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -20,17 +20,17 @@
     }
 
     .p-dialog-header-icon {
-      color: var(--cor-desfoque);
+      color: var(--blur-color);
 
       &:hover {
-        color: var(--cor-preto);
+        color: var(--black-color);
       }
     }
   }
 
   .p-dialog-content {
     padding: 0;
-    background: var(--cor-branco);
+    background: var(--white-color);
   }
 }
 
@@ -42,7 +42,7 @@
 }
 
 .modal-description {
-  color: var(--cor-desfoque);
+  color: var(--blur-color);
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0;
@@ -60,8 +60,8 @@
 .price-increase-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--cor-de-borda);
-  background: var(--cor-branco);
+  border: 1px solid var(--border-color);
+  background: var(--white-color);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -70,8 +70,8 @@
   transition: all 0.2s ease;
 
   &:hover:not(:disabled) {
-    border-color: var(--cor-secundaria);
-    background: rgba(63, 191, 82, 0.05);
+    border-color: var(--secondary-color);
+    background: var(--tertiary-color);
   }
 
   &:disabled {
@@ -81,7 +81,7 @@
 
   i {
     font-size: 0.875rem;
-    color: var(--cor-preto);
+    color: var(--black-color);
   }
 }
 
@@ -89,19 +89,19 @@
   flex: 1;
   max-width: 200px;
   height: 50px;
-  border: 2px solid var(--cor-de-borda);
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   padding: 0 1rem;
-  font-family: var(--fonte-titulos);
+  font-family: var(--title-font);
   font-size: 1.25rem;
   font-weight: 600;
   text-align: center;
-  color: var(--cor-preto);
-  background: var(--cor-branco);
+  color: var(--black-color);
+  background: var(--white-color);
 
   &:focus {
     outline: none;
-    border-color: var(--cor-secundaria);
+    border-color: var(--secondary-color);
     box-shadow: 0 0 0 3px rgba(63, 191, 82, 0.1);
   }
 }
@@ -112,8 +112,8 @@
 }
 
 .edit-alert-btn {
-  background: var(--cor-de-terciaria);
-  color: var(--cor-branco);
+  background: var(--tertiary-color);
+  color: var(--white-color);
   border: none;
   border-radius: 8px;
   padding: 0.875rem 2rem;
