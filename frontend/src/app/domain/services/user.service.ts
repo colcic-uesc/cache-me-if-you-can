@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, mergeMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { User } from '../models/user';
-import { BehaviorSubject, mergeMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,24 +11,39 @@ export class UserService {
 
   private user = new BehaviorSubject<User | undefined>(undefined);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      this.getUserDetails().subscribe(user => {
+        this.user.next(user);
+      })
+    }
+  }
 
   login(email: string, password: string) {
     return this.http.post(environment.apiUrl + '/auth/login',
       { email, password }, { responseType: 'text' })
       .pipe(
         mergeMap((jwt) => {
-          let headers = new HttpHeaders();
-          headers = headers.set('Authorization', 'Bearer ' + jwt)
-          return this.http.get<User>(environment.apiUrl + '/auth/user', { headers, responseType: 'json' });
+          localStorage.setItem('jwt', jwt);
+          return this.getUserDetails();
         }),
         tap(user => {
           this.user.next(user);
         })
       );
-  }
+    }
 
-  getUser() {
-    return this.user.asObservable();
+    private getUserDetails() {
+      return this.http.get<User>(environment.apiUrl + '/auth/user', { responseType: 'json' });
+    }
+
+    getUser() {
+      return this.user.asObservable();
+    }
+
+    logout() {
+      this.user.next(undefined);
+      localStorage.removeItem('jwt');
   }
 }
