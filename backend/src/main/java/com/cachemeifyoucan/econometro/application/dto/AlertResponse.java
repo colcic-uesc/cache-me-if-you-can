@@ -6,6 +6,8 @@ public record AlertResponse(
     long productId,
     String productTitle,
     BigDecimal desiredPrice,
+    BigDecimal bestPrice,
+    String imageContent,
     Offer fullfillingOffer
 ) {
 

@@ -1,1 +1,86 @@
-<h1>Meus Alertas</h1>
+<div class="layout-container">
+  <header class="page-header">
+    <h1 class="page-title">Alertas de preço</h1>
+  </header>
+
+  <main class="alerts-content">
+    @if(alerts && alerts.length > 0) {
+      <div class="alerts-list">
+        @for(alert of alerts; track alert.productId) {
+          <article class="alert-card">
+            <!-- Imagem do Produto -->
+            <div class="product-image">
+              <img
+                [src]="'data:image/png;base64,' + alert.imageContent"
+                [alt]="alert.productTitle"
+                class="product-img">
+            </div>
+
+            <!-- Informações do Produto -->
+            <div class="product-info">
+              <h3 class="product-title">{{alert.productTitle}}</h3>
+              <div class="price-info">
+                <span class="price-label">Preço atual:</span>
+                <span class="current-price">R$ {{alert.bestPrice | number:'1.2-2':'pt'}}</span>
+              </div>
+              <div class="price-info">
+                <span class="price-label">Preço desejado:</span>
+                <span class="desired-price">R$ {{alert.desiredPrice | number:'1.2-2':'pt'}}</span>
+              </div>
+            </div>
+
+            <!-- Ações -->
+            <div class="alert-actions">
+              <button
+                type="button"
+                class="edit-btn"
+                (click)="editAlert(alert)"
+                title="Editar alerta">
+                Editar
+              </button>
+              <button
+                type="button"
+                class="delete-btn"
+                (click)="deleteAlert(alert.productId)"
+                title="Excluir alerta">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+    } @else if (isLoading) {
+      <div class="loading-container">
+        <p-progressSpinner></p-progressSpinner>
+        <p>Carregando alertas...</p>
+      </div>
+    } @else {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="pi pi-bell"></i>
+        </div>
+        <h2 class="empty-title">Nenhum alerta criado</h2>
+        <p class="empty-description">
+          Você ainda não criou nenhum alerta de preço.
+          Navegue pelos produtos e clique no ícone do sino para criar seu primeiro alerta!
+        </p>
+        <p-button
+          label="Explorar Produtos"
+          routerLink="/"
+          styleClass="p-button-outlined explore-btn">
+        </p-button>
+      </div>
+    }
+  </main>
+
+  <!-- Modal de Edição -->
+  <app-alert-edit-modal
+    [(visible)]="showEditModal"
+    [alert]="selectedAlert"
+    [isEditing]="true"
+    (save)="onSaveAlert($event)"
+    (cancel)="onCancelEdit()">
+  </app-alert-edit-modal>
+
+  <p-toast></p-toast>
+</div>
